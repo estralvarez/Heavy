@@ -8,7 +8,7 @@ def index():
     return "Hello from Patients!"
 
 @patient_bp.route('/api/pacientes', methods=['POST'])
-def create_patient():
+def create_patient_general_data():
     # Verificar que existe JSON y datos_generales
     if not request.json or 'datos_generales' not in request.json:
         return jsonify({'error': 'Missing patient data'}), 400
@@ -57,4 +57,3 @@ def create_patient():
         session.rollback()
         print(f"❌ Error creating patient: {e}")
         return jsonify({'error': str(e)}), 500
-    
