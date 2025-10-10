@@ -85,8 +85,8 @@ export default function GeneralForm({ data, onChange }) {
           error = 'El teléfono es requerido';
         } else {
           const phoneClean = value.toString().replace(/\D/g, '');
-          if (!/^[0-9]{10,11}$/.test(phoneClean)) {
-            error = 'El teléfono debe tener 10-11 dígitos';
+          if (!/^[0-9]{11}$/.test(phoneClean)) {
+            error = 'El teléfono debe tener 10 dígitos';
           }
         }
         break;
@@ -261,6 +261,7 @@ export default function GeneralForm({ data, onChange }) {
   return (
     <form>
       {/* Fila 1: Nombre y Apellidos (2 columnas iguales) */}
+      <hr className="border-t border-white my-4" />
       <div className="row mb-3">
         <div className="col-6">
           <label htmlFor="nombre" className="form-label">
@@ -480,6 +481,18 @@ export default function GeneralForm({ data, onChange }) {
           </select>
           {errors.institucion && <div className="invalid-feedback">{errors.institucion}</div>}
         </div>
+      </div>
+      <div className="form-check mt-4">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          id="venopuncion"
+          checked={!!data.venopuncion}
+          onChange={(e) => handleChange("venopuncion", e.target.checked)}
+        />
+        <label className="form-check-label" htmlFor="venopuncion">
+          Acepto participar en la venopunción para la recolección de muestras.
+        </label>
       </div>
     </form>
   );
