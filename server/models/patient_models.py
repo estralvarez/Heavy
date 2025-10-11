@@ -43,8 +43,8 @@ class Illness(Base):
     
     id = Column(Integer, primary_key=True)
     paciente_id = Column(Integer, ForeignKey('patient.id'))
-    enfermedades = Column(String(500))
     sintomas = Column(String(500))
+    patologias = Column(String(500))
 
     patient = relationship("Patient", back_populates="illnesses")
 

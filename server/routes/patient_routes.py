@@ -57,7 +57,7 @@ def create_risk_zones(paciente_id):
         return jsonify({'error': 'Paciente no encontrado'}), 404
 
     zonas_data = request.json.get('zonas_exposicion', {})
-    print("📝 Datos recibidos:", zonas_data)  # Para debugging
+    print("📝 Datos recibidos:", zonas_data)
     
     try:
         talleres = zonas_data.get('talleres', [])
@@ -96,16 +96,16 @@ def create_illness(paciente_id):
     illness_data = request.json.get('antecedentes_patologicos', {})
     print("📝 Datos recibidos:", illness_data)
     try:
-        enfermedades = illness_data.get('enfermedades', [])
         sintomas = illness_data.get('sintomas', [])
+        patologias = illness_data.get('patologias', [])
 
-        print(f"🦠 Enfermedades: {enfermedades}")
-        print(f"🤒 Síntomas: {sintomas}")
+        print(f"🦠 Sintomas: {sintomas}")
+        print(f"🤒 Patologias: {patologias}")
 
         nueva_enfermedad = Illness(
             paciente_id=paciente_id,
-            enfermedades=', '.join(enfermedades),
-            sintomas=', '.join(sintomas)
+            sintomas=', '.join(sintomas),
+            patologias=', '.join(patologias)
         )
         session.add(nueva_enfermedad)
         session.commit()

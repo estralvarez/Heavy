@@ -5,13 +5,14 @@ import ConsentModal from "./survey/ConsentModal";
 import GeneralForm from "./survey/GeneralForm";
 import ZonasExposicionForm from "./survey/ZonesForm";
 import EnfermedadForm from "./survey/IllnessForm";
+import AlimentosForm from "./survey/FoodForm";
 import "../index.css";
 
 export default function RegistroPage() {
   const [generalData, setGeneralData] = useState({});
   const [zonasData, setZonasData] = useState({});
   const [enfermedadData, setEnfermedadData] = useState({});
-  const [habitosAlimenticiosData, setHabitosAlimenticiosData] = useState({});
+  const [alimentosData, setAlimentosData] = useState({});
   const [habitosSaludData, setHabitosSaludData] = useState({});
   const [currentStep, setCurrentStep] = useState(1);
   const [showConsentModal, setShowConsentModal] = useState(false);
@@ -201,7 +202,7 @@ export default function RegistroPage() {
         };
 
         const enfermedadPayload = {
-          enfermedad: {
+          antecedentes_patologicos: {
             sintomas: getSelectedValues(sintomas, enfermedadData),
             patologias: getSelectedValues(patologias, enfermedadData)
           }
@@ -212,6 +213,18 @@ export default function RegistroPage() {
         const response = await postData(`/api/pacientes/${pacienteId}/illness`, enfermedadPayload);
         console.log("✅ Enfermedad guardada:", response);
       }
+
+      if (currentStep === 4) {
+        if (!pacienteId) {
+          alert("⚠️ No se encontró el ID del paciente. Regrese al paso 1.");
+          return;
+        }
+        const alimentosPayload = { habitos_alimenticios: alimentosData };
+        console.log("📤 Enviando alimentos payload:", alimentosPayload);
+        const response = await postData(`/api/pacientes/${pacienteId}/food-habits`, alimentosPayload);
+        console.log("✅ Hábitos alimenticios guardados:", response);
+      }
+
 
 
             // Avanzar al siguiente paso
@@ -287,6 +300,7 @@ export default function RegistroPage() {
                   sintomas={sintomas}
                   patologias={patologias}
               />}
+              {currentStep === 4 && <AlimentosForm data={alimentosData} onChange={setAlimentosData} />}
             </div>
 
             <div className="d-flex justify-content-end mt-4">
