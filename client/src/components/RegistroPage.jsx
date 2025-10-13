@@ -15,7 +15,7 @@ export default function RegistroPage() {
   const [enfermedadData, setEnfermedadData] = useState({});
   const [alimentosData, setAlimentosData] = useState({});
   const [habitosSaludData, setHabitosSaludData] = useState({});
-  const [currentStep, setCurrentStep] = useState(6);
+  const [currentStep, setCurrentStep] = useState(1);
   const [showConsentModal, setShowConsentModal] = useState(false);
   const [consentAccepted, setConsentAccepted] = useState(false);
   const [venipunctureAccepted, setVenipunctureAccepted] = useState(false);
@@ -131,7 +131,7 @@ export default function RegistroPage() {
 
 
   useEffect(() => {
-    setShowConsentModal(false);
+    setShowConsentModal(true);
   }, []);
 
   // Scroll to top whenever the current step changes
