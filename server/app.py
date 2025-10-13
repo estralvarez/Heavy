@@ -31,3 +31,7 @@ def create_app():
         Base.metadata.create_all(bind=engine)
 
     return app
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run()
