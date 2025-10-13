@@ -1,11 +1,11 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
 from models.patient_models import session, Patient, RiskZones, Illness, Food, Health
 
 patient_bp = Blueprint('patients', __name__)
 
 @patient_bp.route('/', methods=['GET'])
 def index():
-    return "Hello from Patients!"
+    return render_template('index.html')
 
 @patient_bp.route('/api/pacientes', methods=['POST'])
 def create_patient_general_data():
