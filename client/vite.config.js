@@ -7,6 +7,7 @@ export default defineConfig({
     sourcemap: false,
   },
   plugins: [react()],
+  base: process.env.VITE_BASE_PATH || '/HeavyApp',
   server: {
     port: 3000,
   },
