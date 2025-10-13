@@ -107,7 +107,7 @@ const MainPage = () => {
                 <h3 className="fw-semibold">Metales Pesados</h3>
                 <p className="mt-4">
                   Se exploran los niveles de metales pesados en sangre,
-                  incluyendo plomo, mercurio y cadmio.
+                  incluyendo plomo, mercurio y cadmio. Y en el futuro otros metales
                 </p>
               </div>
             </div>
@@ -121,7 +121,7 @@ const MainPage = () => {
                 </div>
                 <h3 className="fw-semibold">Población y Muestra</h3>
                 <p className="mt-4">
-                  Se encuestará a la población escolar del municipio San Diego,
+                  Se encuestará a la población escolar de distintos colegios del municipio San Diego,
                   Edo. Carabobo.
                 </p>
               </div>

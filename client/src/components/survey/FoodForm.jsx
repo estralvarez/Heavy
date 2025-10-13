@@ -1,93 +1,79 @@
 import { useState } from "react";
+import { CheckCircle } from "lucide-react";
 
-// Suponiendo que este componente recibe 'data' y 'onChange' como props
-// para manejar el estado desde un componente padre.
-export default function AlimentosForm({ data, onChange }) {
-  
-  // Array de los alimentos sobre los que se preguntará
+export default function FoodFrequencyForm({ data, onChange }) {
+  // 1. DATOS MEJORADOS: Combinamos los datos para que sean más ricos, como en el .tsx
   const alimentos = [
-    { id: "vegetales", label: "Vegetales (brócoli, espinaca, zanahoria, etc.)" },
-    { id: "frutas", label: "Frutas (manzana, cambur, naranja, etc.)" },
-    { id: "granos", label: "Granos (caraotas, lentejas, arvejas, etc.)" },
-    { id: "carne_roja", label: "Carne roja (res, cerdo, etc.)" },
-    { id: "carne_blanca", label: "Carne blanca (pollo, pavo, etc.)" },
-    { id: "pescado", label: "Pescado" },
-    { id: "enlatados", label: "Alimentos enlatados" },
-    { id: "embutidos", label: "Alimentos embutidos (jamón, salchichas, etc.)" },
+    { id: "cereales", label: "Cereales", categoria: "arroz, avena, maíz, trigo (pan, harina)"},
+    { id: "leguminosas", label: "Leguminosas", categoria: "arvejas, caraotas, frijoles, lentejas, soya"},
+    { id: "tuberculos", label: "Tubérculos y plátano", categoria: "batata, ñame, ocumo, papa, yuca y plátano"},
+    { id: "carnes", label: "Carnes", categoria: "carne de res, cerdo, embutidos, pollo"},
+    { id: "pescados", label: "Pescados y mariscos (frescos)", categoria: "atún, sushi, sardina"},
+    { id: "pescados_procesados", label: "Pescados y mariscos (procesados)", categoria: "atun enlatado"},
+    { id: "bebidas", label: "Bebidas", categoria: "Refrescos, bebidas energeticas"},
+    { id: "huevos", label: "Huevos", categoria: "cocido"},
+    { id: "lacteos", label: "Lácteos", categoria: "leche, queso amarillo, queso blanco, suero, yogurt"},
+    { id: "frutas", label: "Frutas", categoria: "frescas, jugo natural"},
+    { id: "vegetales", label: "Vegetales", categoria: "albahaca, berenjena, berro, cebolla, espinaca"},
+    { id: "azucar", label: "Azúcar", categoria: "azúcar, miel"},
+    { id: "grasas", label: "Grasas", categoria: "aceite, mantequilla, margarina, mayonesa"},
+    { id: "chocolate", label: "Productos de Cacao", categoria: "chocolate, cacao en polvo"},
   ];
 
-  // Opciones de frecuencia de consumo
   const opcionesFrecuencia = [
-    { id: "nunca", label: "Nunca", value: 1 },
-    { id: "rara_vez", label: "Rara vez", value: 2 },
-    { id: "a_veces", label: "A veces", value: 3 },
-    { id: "frecuentemente", label: "Frecuentemente", value: 4 },
-    { id: "diario", label: "Diario", value: 5 },
+    { id: "nunca", label: "1", value: "Nunca"},
+    { id: "rara_vez", label: "2", value: "Rara vez"},
+    { id: "a_veces", label: "3", value: "A veces"},
+    { id: "frecuentemente", label: "4", value: "Frecuentemente"},
+    { id: "diario", label: "5", value: "Diario"},
   ];
 
-  // Función para manejar los cambios en los radio buttons
-  const handleChange = (alimentoId, frecuenciaLabel) => {
-    onChange({ ...data, [alimentoId]: frecuenciaLabel });
-  };
+  // 2. LÓGICA DE ESTADO AVANZADA: Tomada del .tsx para la interactividad
+  const [responses, setResponses] = useState(data || {});
 
+  const handleFrequencySelect = (alimentoId, frecuenciaId) => {
+    const newResponses = { ...responses, [alimentoId]: frecuenciaId };
+    setResponses(newResponses);
+    onChange(newResponses); // Notificar al componente padre
+  };
+  
   return (
     <form>
-      {/* Título y descripción más limpios */}
-      <h2 className="text-lg font-semibold mb-2">Hábitos Alimenticios</h2>
-      <p className="mb-3">
-        Indique con qué frecuencia consume los siguientes tipos de alimentos.
-      </p>
-
-      {/* La escala se muestra una sola vez y de forma clara */}
-      <div className="card bg-light border-secondary mb-4">
-        <div className="card-body text-center p-2">
-          <p className="mb-0 text-muted">
-            <strong>Use la escala:</strong> 1 = Nunca, 2 = Rara vez, 3 = A veces, 4 = Frecuentemente, 5 = Diario
-          </p>
-        </div>
-      </div>
-
-      <div className="table-responsive">
-        <table className="table table-hover align-middle">
-          <thead>
-            <tr>
-              {/* Se le da más espacio a la columna de alimentos */}
-              <th scope="col" style={{ width: '35%' }}>Alimento</th>
+          <hr className="border-t border-white my-4" />
+          {alimentos.map((alimento) => (
+            <div
+              key={alimento.id}
+              className={`card-shadow p-3 border rounded-3 transition-all ${
+                responses[alimento.id] }`}
+            >
+              <div className="d-flex align-items-center mb-2">
+                <span className="fs-4 me-3">{alimento.emoji}</span>
+                <div className="flex-grow-1">
+                  <h3 className="h6 mb-0 fw-semibold">{alimento.label}</h3>
+                  <p className="food-category-label mb-0">{alimento.categoria}</p>
+                </div>
+                {responses[alimento.id] && <CheckCircle className="text-success ms-auto" />}
+              </div>
               
-              {/* El encabezado de la tabla ahora usa solo los números de la escala */}
-              {opcionesFrecuencia.map((opcion) => (
-                <th key={opcion.id} scope="col" className="text-center">
-                  {opcion.value} {/* Se muestra el número (ej: 1) en lugar del label ("Nunca") */}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {alimentos.map((alimento) => (
-              <tr key={alimento.id}>
-                {/* El texto del alimento ahora está alineado verticalmente */}
-                <td>{alimento.label}</td>
-                
-                {opcionesFrecuencia.map((opcion) => (
-                  <td key={opcion.id} className="text-center">
-                    <div className="form-check d-flex justify-content-center">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name={alimento.id}
-                        id={`${alimento.id}-${opcion.id}`}
-                        value={opcion.label}
-                        checked={data[alimento.id] === opcion.label}
-                        onChange={() => handleChange(alimento.id, opcion.label)}
-                      />
-                    </div>
-                  </td>
+              {/* Rejilla de Botones de Bootstrap */}
+              <div className="row row-cols-2 row-cols-md-5 g-2">
+                {opcionesFrecuencia.map((freq) => (
+                  <div className="col" key={freq.id}>
+                    <button
+                      type="button"
+                      onClick={() => handleFrequencySelect(alimento.id, freq.id)}
+                      className={`circular-btn w-100 ${
+                        responses[alimento.id] === freq.id ? 'selected' : ''
+                      }`}
+                    >
+                      <span>{freq.label}</span>
+                    </button>
+                  </div>
                 ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </form>
+              </div>
+            </div>
+          ))}
+
+        </form>
   );
 }

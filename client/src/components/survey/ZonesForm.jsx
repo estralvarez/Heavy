@@ -1,10 +1,50 @@
-import { useState } from "react"
+import { CheckCircle } from "lucide-react";
 
 export default function ZonasExposicionForm({ data, onChange, taller, fabrica, lugares }) {
 
   const handleChange = (id, value) => {
-    onChange({ ...data, [id]: value });
-  
+    let newData = { ...data };
+    
+    // Lógica para manejar "Ninguna de las anteriores"
+    if (id === 'ninguntaller' && value) {
+      // Si se selecciona "ninguntaller", desmarcar todos los otros talleres
+      taller.forEach(item => {
+        if (item.id !== 'ninguntaller') {
+          newData[item.id] = false;
+        }
+      });
+    } else if (id === 'ningunindustria' && value) {
+      // Si se selecciona "ningunindustria", desmarcar todas las otras industrias
+      fabrica.forEach(item => {
+        if (item.id !== 'ningunindustria') {
+          newData[item.id] = false;
+        }
+      });
+    } else if (id === 'ningunlugar' && value) {
+      // Si se selecciona "ningunlugar", desmarcar todos los otros lugares
+      lugares.forEach(item => {
+        if (item.id !== 'ningunlugar') {
+          newData[item.id] = false;
+        }
+      });
+    } else if (value) {
+      // Si se selecciona cualquier otra opción, desmarcar "Ninguna de las anteriores" correspondiente
+      if (taller.some(item => item.id === id)) {
+        newData['ninguntaller'] = false;
+      } else if (fabrica.some(item => item.id === id)) {
+        newData['ningunindustria'] = false;
+      } else if (lugares.some(item => item.id === id)) {
+        newData['ningunlugar'] = false;
+      }
+    }
+    
+    newData[id] = value;
+    onChange(newData);
+  };
+
+  // Función para verificar si una sección tiene al menos una opción seleccionada
+  const hasSelection = (items) => {
+    return items.some(item => data[item.id]);
   };
 
   return (
@@ -14,7 +54,13 @@ export default function ZonasExposicionForm({ data, onChange, taller, fabrica, l
       <hr className="border-t border-white my-4" />
       
       {/* Sección Talleres */}
-        <h2 className="text-lg font-semibold mb-4">Talleres</h2>
+      <div className={`card-shadow p-3 border rounded-3 transition-all mb-4 ${
+        hasSelection(taller) ? 'border-success' : ''
+      }`}>
+        <div className="d-flex align-items-center mb-3">
+          <h2 className="text-lg font-semibold mb-0 flex-grow-1">Talleres</h2>
+          {hasSelection(taller) && <CheckCircle className="text-success" size={20} />}
+        </div>
         {taller.map((tallerItem) => (
           <div key={tallerItem.id} className="form-check mb-3">
             <input
@@ -29,12 +75,18 @@ export default function ZonasExposicionForm({ data, onChange, taller, fabrica, l
             </label>
           </div>
         ))}
+      </div>
       
       <hr className="border-t border-white my-4" />
       
       {/* Sección Fábricas */}
-
-        <h2 className="text-lg font-semibold mb-4">Fabricas</h2>
+      <div className={`card-shadow p-3 border rounded-3 transition-all mb-4 ${
+        hasSelection(fabrica) ? 'border-success' : ''
+      }`}>
+        <div className="d-flex align-items-center mb-3">
+          <h2 className="text-lg font-semibold mb-0 flex-grow-1">Fábricas</h2>
+          {hasSelection(fabrica) && <CheckCircle className="text-success" size={20} />}
+        </div>
         {fabrica.map((fabricaItem) => (
           <div key={fabricaItem.id} className="form-check mb-3">
             <input
@@ -49,11 +101,18 @@ export default function ZonasExposicionForm({ data, onChange, taller, fabrica, l
             </label>
           </div>
         ))}
+      </div>
       
       <hr className="border-t border-white my-4" />
       
       {/* Sección Zonas de Exposición */}
-        <h2 className="text-lg font-semibold mb-4">Zonas de Exposición</h2>
+      <div className={`card-shadow p-3 border rounded-3 transition-all mb-4 ${
+        hasSelection(lugares) ? 'border-success' : ''
+      }`}>
+        <div className="d-flex align-items-center mb-3">
+          <h2 className="text-lg font-semibold mb-0 flex-grow-1">Zonas de Exposición</h2>
+          {hasSelection(lugares) && <CheckCircle className="text-success" size={20} />}
+        </div>
         {lugares.map((lugarItem) => (
           <div key={lugarItem.id} className="form-check mb-3">
             <input
@@ -68,6 +127,7 @@ export default function ZonasExposicionForm({ data, onChange, taller, fabrica, l
             </label>
           </div>
         ))}
+      </div>
     </form>
   )
 };

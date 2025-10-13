@@ -99,7 +99,15 @@ export default function GeneralForm({ data, onChange }) {
         }
         break;
 
-      case 'ocupacion':
+      case 'ocupacion_madre':
+        if (!value || value.trim() === '') {
+          error = 'La ocupación es requerida';
+        } else if (value.length < 2) {
+          error = 'La ocupación debe ser más específica';
+        }
+        break;
+
+      case 'ocupacion_padre':
         if (!value || value.trim() === '') {
           error = 'La ocupación es requerida';
         } else if (value.length < 2) {
@@ -126,7 +134,7 @@ export default function GeneralForm({ data, onChange }) {
   };
 
   const validateGeneralData = (data) => {
-    const requiredFields = ['nombre', 'apellidos', 'edad', 'sexo', 'sector', 'zona', 'direccion', 'telefono', 'email', 'ocupacion', 'institucion'];
+    const requiredFields = ['nombre', 'apellidos', 'edad', 'sexo', 'sector', 'zona', 'direccion', 'telefono', 'email', 'ocupacion_madre', 'ocupacion_padre', 'institucion'];
     let isValid = true;
 
     requiredFields.forEach(field => {
@@ -440,24 +448,40 @@ export default function GeneralForm({ data, onChange }) {
         </div>
       </div>
 
-      {/* Fila 6: Ocupación (1 columna de ancho completo) */}
+      {/* Fila 6: Ocupación (2 columnas iguales) */}
       <div className="row mb-3">
-        <div className="col-12">
-          <label htmlFor="ocupacion" className="form-label">
-            Ocupación
+        <div className="col-6">
+          <label htmlFor="ocupacion_madre" className="form-label">
+            Ocupación Madre
           </label>
           <input
-            id="ocupacion"
-            className={getInputClassName('ocupacion')}
-            value={data.ocupacion || ""}
-            onChange={(e) => handleChange("ocupacion", e.target.value)}
-            onBlur={() => handleBlur("ocupacion")}
-            placeholder="Ingrese su ocupación"
+            id="ocupacion_madre"
+            className={getInputClassName('ocupacion_madre')}
+            value={data.ocupacion_madre || ""}
+            onChange={(e) => handleChange("ocupacion_madre", e.target.value)}
+            onBlur={() => handleBlur("ocupacion_madre")}
+            placeholder="Ingrese la ocupación de su madre"
             required
           />
-          {errors.ocupacion && <div className="invalid-feedback">{errors.ocupacion}</div>}
+          {errors.ocupacion_madre && <div className="invalid-feedback">{errors.ocupacion_madre}</div>}
+        </div>
+        <div className="col-6">
+          <label htmlFor="ocupacion_padre" className="form-label">
+            Ocupación Padre
+          </label>
+          <input
+            id="ocupacion_padre"
+            className={getInputClassName('ocupacion_padre')}
+            value={data.ocupacion_padre || ""}
+            onChange={(e) => handleChange("ocupacion_padre", e.target.value)}
+            onBlur={() => handleBlur("ocupacion_padre")}
+            placeholder="Ingrese la ocupación de su padre"
+            required
+          />
+          {errors.ocupacion_padre && <div className="invalid-feedback">{errors.ocupacion_padre}</div>}
         </div>
       </div>
+      
 
       {/* Fila 7: Institución (1 columna de ancho completo) */}
       <div className="row mb-3">

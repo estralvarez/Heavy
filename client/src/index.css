@@ -1,106 +1,140 @@
+/* ===== CSS VARIABLES - COLOR PALETTE ===== */
+:root {
+  /* Primary Colors */
+  --background: #f8f8f8;        /* Light gray background */
+  --dark: #34314C;              /* Dark purple-gray */
+  --liquid: #dc2626;            /* Primary red */
+  
+  /* Extended Palette */
+  --primary-dark: #131417;      /* Very dark background */
+  --secondary-dark: #2c3034;    /* Medium dark */
+  --accent-red: #e45454;        /* Lighter red accent */
+  --danger-red: #ff0000;        /* Bright red for alerts */
+  
+  /* Neutral Colors */
+  --white: #ffffff;
+  --light-gray: #f4f4f4;
+  --medium-gray: #6c757d;
+  --border-light: #e9ecef;
+  --shadow-dark: #2c303a;
+  
+  /* Bootstrap-like Colors */
+  --primary-blue: #007bff;
+  --primary-blue-hover: #0056b3;
+  --success-green: #28a745;
+  --dark-header: #212529;
+  --footer-dark: #333333;
+}
+
+/* ===== GLOBAL STYLES ===== */
 main {
-    background-color: #131417;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  background-color: var(--primary-dark);
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--light-gray);
 }
 
+/* ===== TYPOGRAPHY ===== */
 h1, h2, h3 {
-    font-weight: bold;
-    color: #e45454 !important;
-    margin: 0;
+  font-weight: bold;
+  color: var(--accent-red) !important;
+  margin: 0;
 }
 
 p {
-    color: #ffffff !important;
-    line-height: 1.6;
-    margin: 0 0 10px 0;
+  color: var(--white) !important;
+  line-height: 1.6;
+  margin: 0 0 10px 0;
+}
+
+/* ===== LAYOUT COMPONENTS ===== */
+.container {
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
 }
 
 .card-shadow {
-    box-shadow: 0 4px 8px #2c303a;
-    border: 1px solid #e45454;
-    border-radius: 8px;
-    background: #2c3034;
-    padding: 20px;
-    margin: 20px 0;
+  box-shadow: 0 4px 8px var(--shadow-dark);
+  border: 1px solid var(--accent-red);
+  border-radius: 8px;
+  background: var(--secondary-dark);
+  padding: 20px;
+  margin: 20px 0;
 }
 
-.container {
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
-}
-
+/* ===== HEADER & FOOTER ===== */
 header {
-    background: #212529;
-    color: #e45454;
-    padding: 10px 0;
+  background: var(--dark-header);
+  color: var(--accent-red);
+  padding: 10px 0;
 }
 
 header h1 {
-    text-align: center;
-}
-
-.hero {
-    background: #007bff;
-    color: #fff;
-    padding: 50px 0;
-    text-align: center;
-}
-
-.about {
-    padding: 20px;
-    background: #fff;
-    text-align: center;
+  text-align: center;
 }
 
 footer {
-    background: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+  background: var(--footer-dark);
+  color: var(--white);
+  text-align: center;
+  padding: 10px 0;
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }
 
+/* ===== SECTIONS ===== */
+.hero {
+  background: var(--primary-blue);
+  color: var(--white);
+  padding: 50px 0;
+  text-align: center;
+}
+
+.about {
+  padding: 20px;
+  background: var(--white);
+  text-align: center;
+}
+
+/* ===== FORM ELEMENTS ===== */
 form label {
-    font-weight: bold;
-    color: #ffffff !important;
+  font-weight: bold;
+  color: var(--white) !important;
 }
-
-input[type="checkbox"].form-check-input:checked {
-    background-color: #ff0000; /* Red background color when checked */
-    border-color: #ff0000;     /* Red border color when checked */
-}
-
 
 form button {
-    padding: 10px 20px;
-    background: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
+  padding: 10px 20px;
+  background: var(--primary-blue);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
 }
 
 form button:hover {
-    background: #0056b3;
+  background: var(--primary-blue-hover);
 }
 
-
-:root {
-  --background: #f8f8f8;
-  --dark: #34314C;
-  --liquid: #dc2626;
+input[type="checkbox"].form-check-input:checked {
+  background-color: var(--danger-red);
+  border-color: var(--danger-red);
 }
 
+input[type="radio"].form-check-input:checked {
+  background-color: var(--danger-red);
+  border-color: var(--danger-red);
+}
+
+/* ===== CUSTOM COMPONENTS ===== */
+
+/* Animated Logo Box */
 .box {
   position: relative;
   background: var(--liquid);
@@ -109,8 +143,9 @@ form button:hover {
   height: 5rem;
   width: 5rem;
   outline: 0;
-  overflow: hidden; /* Set to none to see fill square outside box */
+  overflow: hidden;
 }
+
 .box::before {
   content: "H";
   font-size: 5rem;
@@ -123,16 +158,17 @@ form button:hover {
   align-items: center;
   justify-content: center;
 }
+
 .box::after {
   content: "";
   position: absolute;
-  bottom: -50%; /* Center sauare */
-  left: -50%; /* Center sauare */
+  bottom: -50%;
+  left: -50%;
   height: 200%;
   width: 200%;
   background-color: var(--background);
-  border-radius: 35%; /* Smooth edges to appear like liquid */
-  animation: spin 6s ease-in-out infinite; /* Set to forwards to freeze on last frame */
+  border-radius: 35%;
+  animation: spin 6s ease-in-out infinite;
 }
 
 @keyframes spin {
@@ -142,4 +178,37 @@ form button:hover {
   100% {
     transform: translateY(-100%) rotate(400deg);
   }
+}
+
+/* ===== FOOD FORM COMPONENTS ===== */
+
+/* Circular Selection Buttons */
+.circular-btn {
+  padding: 6px 0px;
+  border-radius: 15px;
+  font-weight: bold;
+  background-color: var(--liquid);
+  color: var(--background);
+  font-size: 12px;
+  text-align: center;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.circular-btn:hover {
+  cursor: pointer;
+  background-color: var(--danger-red);
+  transform: scale(1.1);
+}
+
+.circular-btn.selected {
+  background: var(--success-green) !important;
+  color: var(--background) !important;
+}
+
+.food-category-label {
+  font-size: 0.875rem;
+  color: var(--medium-gray);
+  font-style: italic;
+  margin-bottom: 0.5rem;
 }
