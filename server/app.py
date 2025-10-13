@@ -14,6 +14,7 @@ def create_app():
     frontend_url = os.getenv('FRONTEND_URL')
     allowed_origins = [
         "http://localhost:3000",
+        "https://localhost:3000",
         frontend_url
     ]
 
@@ -31,6 +32,8 @@ def create_app():
 
     return app
 
+# Para Vercel, necesitamos exportar la app directamente
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
     app.run(host='0.0.0.0', port=5000, debug=True)
