@@ -4,7 +4,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from config.database import Config
 
 Base = declarative_base()
-engine = create_engine(Config.SQLALCHEMY_DATABASE_URI, echo=True)
+engine = create_engine(
+    Config.SQLALCHEMY_DATABASE_URI, 
+    echo=True,
+    **Config.SQLALCHEMY_ENGINE_OPTIONS
+)
 session = Session(bind=engine)
 
 class Patient(Base):
