@@ -1,9 +1,10 @@
 from sqlalchemy import Integer, Column, String, Boolean, create_engine, ForeignKey
-from sqlalchemy.orm import relationship, joinedload, subqueryload, Session
+from sqlalchemy.orm import relationship, Session
 from sqlalchemy.ext.declarative import declarative_base
+from config.database import Config
 
 Base = declarative_base()
-engine = create_engine('sqlite:///patients.db', echo=True)
+engine = create_engine(Config.SQLALCHEMY_DATABASE_URI, echo=True)
 session = Session(bind=engine)
 
 class Patient(Base):
@@ -89,6 +90,13 @@ class Health(Base):
     suplementos = Column(String(500))
 
     patient = relationship("Patient", back_populates="health")
+
+class User(Base):
+    __tablename__ = 'user'
+    
+    id = Column(Integer, primary_key=True)
+    username = Column(String(50), unique=True)
+    password = Column(String(50))
     
     
 
