@@ -107,7 +107,7 @@ const MainPage = () => {
                 <h3 className="fw-semibold">Metales Pesados</h3>
                 <p className="mt-4">
                   Se exploran los niveles de metales pesados en sangre,
-                  incluyendo plomo, mercurio y cadmio. Y en el futuro otros metales
+                  incluyendo Plomo, Mercurio y Cadmio. Y en el futuro  tambien otros metales de interés.
                 </p>
               </div>
             </div>
