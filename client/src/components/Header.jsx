@@ -32,6 +32,9 @@ const Header = () => {
           <a href="#contact" className="text-white text-decoration-none px-2">
             Contacto
           </a>
+          <a href="nosotros" className="text-white text-decoration-none px-2">
+            Nosotros
+          </a>
         </nav>
       </div>
     </header>

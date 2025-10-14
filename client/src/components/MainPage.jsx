@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
 import "../index.css";
 import Header from "./Header";
-import { FlaskConical, Droplets, NotepadText, Users } from "lucide-react";
+import { Droplets, NotepadText, Users } from "lucide-react";
+import landing from "../assets/landing.png";
 
 const MainPage = () => {
   const [loading, setLoading] = useState(false);
@@ -44,9 +45,8 @@ const MainPage = () => {
           <div className="col-lg-6 mb-4 mb-lg-0">
             <h1>Análisis de Metales Pesados en Sangre</h1>
             <p className="lead mt-3">
-              Registro de pacientes para pruebas especializadas de detección de
-              metales pesados. Complete su información de manera segura y
-              confidencial.
+              <strong>HeavyApp</strong> forma parte de un proyecto investigacion que busca detectar los niveles 
+              de exposición a metales pesados en la población escolar de San Diego, Edo. Carabobo.
             </p>
             <div className="mt-4 d-flex flex-column flex-sm-row gap-3">
               {loading ? (
@@ -67,12 +67,8 @@ const MainPage = () => {
             </div>
           </div>
           <div className="col-lg-6 d-flex justify-content-center">
-            <div className="card-shadow" style={{ maxWidth: "22rem" }}>
-              <div className="text-center">
-                <FlaskConical className="me-2" size={50} color="#e45454" />
-                <h3 className="mt-3 fw-semibold">Pruebas Certificadas</h3>
-                <p>Análisis profesional con resultados confiables</p>
-              </div>
+            <div className="card-shadow rounded-circle" style={{ maxWidth: "22rem" }}>
+              <img className="img-fluid rounded-circle" src={landing} alt="landing" />
             </div>
           </div>
         </div>
@@ -90,8 +86,8 @@ const MainPage = () => {
               ¿Por qué realizar un análisis de Metales Pesados?
             </h2>
             <p className="lead mt-3">
-              La exposición a metales pesados puede afectar su salud. Nuestro
-              análisis ayuda a identificar niveles de exposición para así tomar
+              La exposición a metales pesados puede afectar su salud de manera silenciosa. Nuestra
+              investigación busca identificar niveles de exposición para así tomar
               medidas preventivas.
             </p>
           </div>
@@ -170,27 +166,27 @@ const MainPage = () => {
                   {
                     num: 1,
                     title: "Datos Generales",
-                    desc: "Información personal",
+                    desc: "Información personal y de contacto.",
                   },
                   {
                     num: 2,
                     title: "Zonas de Exposición",
-                    desc: "Cercania a fuentes de contaminación",
+                    desc: "Cercania a fuentes de contaminación.",
                   },
                   {
                     num: 3,
-                    title: "Síntomas",
-                    desc: "Síntomas o enfermedades prexistentes",
+                    title: "Síntomas y Enfermedades",
+                    desc: "Síntomas y enfermedades prexistentes.",
                   },
                   {
                     num: 4,
                     title: "Hábitos Alimenticios",
-                    desc: "Información sobre su dieta alimenticia",
+                    desc: "Información sobre su dieta alimenticia.",
                   },
                   {
                     num: 5,
                     title: "Hábitos de Salud",
-                    desc: "Estilo de vida y salud general",
+                    desc: "Estilo de vida y salud general.",
                   },
                 ].map((step, idx, arr) => (
                   <div
