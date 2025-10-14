@@ -23,7 +23,7 @@ export default function RegistroPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const totalSteps = 6;
-  const API = "http://127.0.0.1:5000" || "https://heavy-api.vercel.app/";
+  const API = "http://127.0.0.1:5000" || "https://heavyapi.onrender.com";
 
   // Memoized constants to prevent unnecessary re-renders
   const talleres = useMemo(() => [
