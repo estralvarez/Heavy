@@ -23,7 +23,10 @@ export default function RegistroPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const totalSteps = 6;
-  const API = "http://127.0.0.1:5000" || "https://heavyapi.onrender.com";
+  const API = import.meta.env.VITE_API_URL || 
+    (process.env.NODE_ENV === 'production' 
+      ? "https://heavyapi.onrender.com" 
+      : "http://127.0.0.1:5000");
 
   // Memoized constants to prevent unnecessary re-renders
   const talleres = useMemo(() => [
