@@ -49,13 +49,6 @@ export default function ConsentModal({
             </div>
 
             <div>
-              <h3 className="font-bold text-red-400 mb-1">Derechos del Paciente</h3>
-              <p className="text-sm text-zinc-300">
-                Puede solicitar información o eliminar sus datos en cualquier momento.
-              </p>
-            </div>
-
-            <div>
               <h3 className="font-bold text-red-400 mb-1">Participación en la Venopunción</h3>
               <p className="text-sm text-zinc-300">
                 La venopunción es voluntaria. Puede llenar el registro incluso si decide no donar muestra.
@@ -73,7 +66,7 @@ export default function ConsentModal({
               className="mt-1 w-4 h-4 rounded border-zinc-600 bg-zinc-800 text-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-0 cursor-pointer"
             />
             <label htmlFor="consent" className="text-sm text-zinc-200 cursor-pointer select-none">
-              He leído y comprendo la información anterior y doy mi consentimiento informado.
+              He leído y comprendo la información anterior y doy mi consentimient.
             </label>
           </div>
         </div>

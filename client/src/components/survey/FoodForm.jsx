@@ -10,12 +10,12 @@ export default function FoodFrequencyForm({ data, onChange }) {
     { id: "carnes", label: "Carnes", categoria: "carne de res, cerdo, embutidos, pollo"},
     { id: "pescados", label: "Pescados y mariscos (frescos)", categoria: "atún, sushi, sardina"},
     { id: "pescados_procesados", label: "Pescados y mariscos (procesados)", categoria: "atun enlatado"},
-    { id: "bebidas", label: "Bebidas", categoria: "Refrescos, bebidas energeticas"},
-    { id: "huevos", label: "Huevos", categoria: "cocido"},
+    { id: "bebidas", label: "Bebidas", categoria: "Refrescos, bebidas energeticas, jugos artificiales"},
+    { id: "huevos", label: "Huevos", categoria: ""},
     { id: "lacteos", label: "Lácteos", categoria: "leche, queso amarillo, queso blanco, suero, yogurt"},
-    { id: "frutas", label: "Frutas", categoria: "frescas, jugo natural"},
+    { id: "frutas", label: "Frutas", categoria: "frescas, jugos naturales"},
     { id: "vegetales", label: "Vegetales", categoria: "albahaca, berenjena, berro, cebolla, espinaca"},
-    { id: "azucar", label: "Azúcar", categoria: "azúcar, miel"},
+    { id: "azucar", label: "Azúcar", categoria: "azúcar, miel, mermelada, dulces"},
     { id: "grasas", label: "Grasas", categoria: "aceite, mantequilla, margarina, mayonesa"},
     { id: "chocolate", label: "Productos de Cacao", categoria: "chocolate, cacao en polvo"},
   ];
@@ -39,7 +39,11 @@ export default function FoodFrequencyForm({ data, onChange }) {
   
   return (
     <form className="space-y-4">
-      <p className="text-zinc-400 text-sm mb-6">Seleccione la frecuencia con la que consume cada grupo de alimentos</p>
+      <p className="text-zinc-400 text-sm mb-6">
+        Seleccione la frecuencia con la que consume cada grupo de alimentos:<br />
+        <strong>1 = Nunca, 2 = Rara vez, 3 = A veces, 4 = Frecuentemente, 5 = Diario</strong>
+      </p>
+      
         {alimentos.map((alimento) => (
         <div
           key={alimento.id}
@@ -58,7 +62,7 @@ export default function FoodFrequencyForm({ data, onChange }) {
           </div>
               
           {/* Botones de frecuencia en grid responsive */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+          <div className="grid grid-cols-5 md:grid-cols-5 gap-2">
             {opcionesFrecuencia.map((freq) => (
               <button
                 key={freq.id}
