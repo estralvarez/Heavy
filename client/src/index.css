@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 /* ===== CSS VARIABLES - COLOR PALETTE ===== */
 :root {
   /* Primary Colors */
@@ -26,31 +32,13 @@
   --footer-dark: #333333;
 }
 
-/* ===== GLOBAL STYLES ===== */
+html, body {
+  font-family: "Geist", "Geist Fallback";
+}
+
 main {
-  background-color: var(--primary-dark);
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
+  background: var(--background);
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: var(--light-gray);
-}
-
-/* ===== TYPOGRAPHY ===== */
-h1, h2, h3 {
-  font-weight: bold;
-  color: var(--accent-red) !important;
-  margin: 0;
-}
-
-p {
-  color: var(--white) !important;
-  line-height: 1.6;
-  margin: 0 0 10px 0;
 }
 
 /* ===== LAYOUT COMPONENTS ===== */
@@ -65,20 +53,10 @@ p {
   border: 1px solid var(--accent-red);
   border-radius: 8px;
   background: var(--secondary-dark);
-  padding: 20px;
-  margin: 20px 0;
 }
 
 /* ===== HEADER & FOOTER ===== */
-header {
-  background: var(--dark-header);
-  color: var(--accent-red);
-  padding: 10px 0;
-}
 
-header h1 {
-  text-align: center;
-}
 
 footer {
   background: var(--footer-dark);
@@ -118,9 +96,6 @@ form button {
   cursor: pointer;
 }
 
-form button:hover {
-  background: var(--primary-blue-hover);
-}
 
 input[type="checkbox"].form-check-input:checked {
   background-color: var(--danger-red);
@@ -133,6 +108,40 @@ input[type="radio"].form-check-input:checked {
 }
 
 /* ===== CUSTOM COMPONENTS ===== */
+/* Animated Landing Page */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.animate-delay-100 {
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+
+.animate-delay-200 {
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+.animate-delay-300 {
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+.animate-reverse {
+  animation-direction: reverse;
+}
 
 /* Animated Logo Box */
 .box {

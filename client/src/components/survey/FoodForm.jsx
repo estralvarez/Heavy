@@ -38,42 +38,44 @@ export default function FoodFrequencyForm({ data, onChange }) {
   };
   
   return (
-    <form>
-          <hr className="border-t border-white my-4" />
-          {alimentos.map((alimento) => (
-            <div
-              key={alimento.id}
-              className={`card-shadow p-3 border rounded-3 transition-all ${
-                responses[alimento.id] }`}
-            >
-              <div className="d-flex align-items-center mb-2">
-                <span className="fs-4 me-3">{alimento.emoji}</span>
-                <div className="flex-grow-1">
-                  <h3 className="h6 mb-0 fw-semibold">{alimento.label}</h3>
-                  <p className="food-category-label mb-0">{alimento.categoria}</p>
-                </div>
-                {responses[alimento.id] && <CheckCircle className="text-success ms-auto" />}
-              </div>
-              
-              {/* Rejilla de Botones de Bootstrap */}
-              <div className="row row-cols-2 row-cols-md-5 g-2">
-                {opcionesFrecuencia.map((freq) => (
-                  <div className="col" key={freq.id}>
-                    <button
-                      type="button"
-                      onClick={() => handleFrequencySelect(alimento.id, freq.id)}
-                      className={`circular-btn w-100 ${
-                        responses[alimento.id] === freq.id ? 'selected' : ''
-                      }`}
-                    >
-                      <span>{freq.label}</span>
-                    </button>
-                  </div>
-                ))}
-              </div>
+    <form className="space-y-4">
+      <p className="text-zinc-400 text-sm mb-6">Seleccione la frecuencia con la que consume cada grupo de alimentos</p>
+        {alimentos.map((alimento) => (
+        <div
+          key={alimento.id}
+          className={`p-4 rounded-lg border-2 transition-all ${
+            responses[alimento.id]
+              ? "bg-zinc-800/50 border-green-500"
+              : "bg-zinc-900/50 border-zinc-700 hover:border-zinc-600"
+          }`}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex-1">
+              <h3 className="font-semibold text-white mb-1">{alimento.label}</h3>
+              <p className="text-sm text-zinc-400">{alimento.categoria}</p>
             </div>
-          ))}
-
-        </form>
+            {responses[alimento.id] && <CheckCircle className="text-green-500 flex-shrink-0 ml-3" size={20} />}
+          </div>
+              
+          {/* Botones de frecuencia en grid responsive */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+            {opcionesFrecuencia.map((freq) => (
+              <button
+                key={freq.id}
+                type="button"
+                onClick={() => handleFrequencySelect(alimento.id, freq.id)}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                  responses[alimento.id] === freq.id
+                    ? "bg-red-500 text-white shadow-lg scale-105"
+                    : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-white"
+                }`}
+              >
+                {freq.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+    </form>
   );
 }

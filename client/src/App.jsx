@@ -12,7 +12,7 @@ function App() {
           <Route path="/registro" element={<RegistroPage />} />
         </Routes>
       </main>
-    </BrowserRouter>
+    </BrowserRouter>    
   );
 }
 

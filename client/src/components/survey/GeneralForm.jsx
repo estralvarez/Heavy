@@ -1,170 +1,133 @@
 import { useState, useEffect } from 'react';
 
 export default function GeneralForm({ data, onChange }) {
-  const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
+  const [errors, setErrors] = useState({})
+  const [touched, setTouched] = useState({})
 
   const handleChange = (field, value) => {
-    onChange({ ...data, [field]: value });
-    
-    // Validar inmediatamente después del cambio
+    onChange({ ...data, [field]: value })
+
     if (touched[field]) {
-      validateField(field, value);
+      validateField(field, value)
     }
-  };
+  }
 
   const handleBlur = (field) => {
-    setTouched(prev => ({ ...prev, [field]: true }));
-    validateField(field, data[field]);
-  };
+    setTouched((prev) => ({ ...prev, [field]: true }))
+    validateField(field, data[field])
+  }
 
   const validateField = (field, value) => {
-    let error = '';
+    let error = ""
 
     switch (field) {
-      case 'nombre':
-        if (!value || value.trim() === '') {
-          error = 'El nombre es requerido';
+      case "nombre":
+        if (!value || value.trim() === "") {
+          error = "El nombre es requerido"
         } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value)) {
-          error = 'El nombre solo puede contener letras y espacios';
+          error = "El nombre solo puede contener letras y espacios"
         } else if (value.length < 2) {
-          error = 'El nombre debe tener al menos 2 caracteres';
+          error = "El nombre debe tener al menos 2 caracteres"
         }
-        break;
+        break
 
-      case 'apellidos':
-        if (!value || value.trim() === '') {
-          error = 'Los apellidos son requeridos';
+      case "apellidos":
+        if (!value || value.trim() === "") {
+          error = "Los apellidos son requeridos"
         } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value)) {
-          error = 'Los apellidos solo pueden contener letras y espacios';
+          error = "Los apellidos solo pueden contener letras y espacios"
         } else if (value.length < 2) {
-          error = 'Los apellidos deben tener al menos 2 caracteres';
+          error = "Los apellidos deben tener al menos 2 caracteres"
         }
-        break;
+        break
 
-      case 'edad':
+      case "edad":
         if (!value && value !== 0) {
-          error = 'La edad es requerida';
+          error = "La edad es requerida"
         } else if (isNaN(value)) {
-          error = 'La edad debe ser un número';
+          error = "La edad debe ser un número"
         } else if (value < 0 || value > 120) {
-          error = 'La edad debe estar entre 0 y 120 años';
+          error = "La edad debe estar entre 0 y 120 años"
         }
-        break;
+        break
 
-      case 'sexo':
+      case "sexo":
         if (!value) {
-          error = 'El sexo es requerido';
-        } else if (!["masculino", "femenino"].includes(value)) {
-          error = 'Seleccione una opción válida';
+          error = "El sexo es requerido"
         }
-        break;
+        break
 
-      case 'sector':
+      case "sector":
         if (!value) {
-          error = 'El sector es requerido';
+          error = "El sector es requerido"
         }
-        break;
+        break
 
-      case 'zona':
+      case "zona":
         if (!value) {
-          error = 'La zona es requerida';
+          error = "La zona es requerida"
         }
-        break;
+        break
 
-      case 'direccion':
-        if (!value || value.trim() === '') {
-          error = 'La dirección es requerida';
+      case "direccion":
+        if (!value || value.trim() === "") {
+          error = "La dirección es requerida"
         } else if (value.length < 5) {
-          error = 'La dirección debe ser más específica';
+          error = "La dirección debe ser más específica"
         }
-        break;
+        break
 
-      case 'telefono':
+      case "telefono":
         if (!value) {
-          error = 'El teléfono es requerido';
+          error = "El teléfono es requerido"
         } else {
-          const phoneClean = value.toString().replace(/\D/g, '');
+          const phoneClean = value.toString().replace(/\D/g, "")
           if (!/^[0-9]{11}$/.test(phoneClean)) {
-            error = 'El teléfono debe tener 10 dígitos';
+            error = "El teléfono debe tener 11 dígitos"
           }
         }
-        break;
+        break
 
-      case 'email':
+      case "email":
         if (!value) {
-          error = 'El correo electrónico es requerido';
+          error = "El correo electrónico es requerido"
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-          error = 'El formato del correo no es válido';
+          error = "El formato del correo no es válido"
         }
-        break;
+        break
 
-      case 'ocupacion_madre':
-        if (!value || value.trim() === '') {
-          error = 'La ocupación es requerida';
+      case "ocupacion_madre":
+      case "ocupacion_padre":
+        if (!value || value.trim() === "") {
+          error = "La ocupación es requerida"
         } else if (value.length < 2) {
-          error = 'La ocupación debe ser más específica';
+          error = "La ocupación debe ser más específica"
         }
-        break;
+        break
 
-      case 'ocupacion_padre':
-        if (!value || value.trim() === '') {
-          error = 'La ocupación es requerida';
-        } else if (value.length < 2) {
-          error = 'La ocupación debe ser más específica';
-        }
-        break;
-
-      case 'institucion':
+      case "institucion":
         if (!value) {
-          error = 'La institución es requerida';
+          error = "La institución es requerida"
         }
-        break;
-
-      default:
-        break;
+        break
     }
 
-    setErrors(prev => ({
-      ...prev,
-      [field]: error
-    }));
-
-    return !error;
-  };
-
-  const validateGeneralData = (data) => {
-    const requiredFields = ['nombre', 'apellidos', 'edad', 'sexo', 'sector', 'zona', 'direccion', 'telefono', 'email', 'ocupacion_madre', 'ocupacion_padre', 'institucion'];
-    let isValid = true;
-
-    requiredFields.forEach(field => {
-      if (!validateField(field, data[field])) {
-        isValid = false;
-      }
-    });
-
-    return isValid;
-  };
-
-  // Validar automáticamente cuando los datos cambian (para casos de carga inicial)
-  useEffect(() => {
-    // Marcar todos como tocados si queremos validación inmediata
-    // setTouched({
-    //   nombre: true, apellidos: true, edad: true, sexo: true,
-    //   sector: true, zona: true, direccion: true, telefono: true,
-    //   email: true, ocupacion: true, institucion: true
-    // });
-  }, []);
+    setErrors((prev) => ({ ...prev, [field]: error }))
+    return !error
+  }
 
   const getInputClassName = (field) => {
-    if (!touched[field]) return "form-control";
-    return errors[field] ? "form-control is-invalid" : "form-control is-valid";
-  };
+    const baseClasses =
+      "w-full px-4 py-3 rounded-lg bg-zinc-800 border-2 text-white placeholder-zinc-500 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-950"
 
-  // Función para que el componente padre pueda validar
-  const isValid = () => {
-    return validateGeneralData(data);
-  };
+    if (!touched[field]) {
+      return `${baseClasses} border-zinc-700 focus:border-red-500 focus:ring-red-500/20`
+    }
+
+    return errors[field]
+      ? `${baseClasses} border-red-500 focus:border-red-500 focus:ring-red-500/20`
+      : `${baseClasses} border-green-500 focus:border-green-500 focus:ring-green-500/20`
+  }
 
   const zonasPorSector = {
     norte_a: [
@@ -267,13 +230,12 @@ export default function GeneralForm({ data, onChange }) {
   };
 
   return (
-    <form>
+    <form className="space-y-6">
       {/* Fila 1: Nombre y Apellidos (2 columnas iguales) */}
-      <hr className="border-t border-white my-4" />
-      <div className="row mb-3">
-        <div className="col-6">
-          <label htmlFor="nombre" className="form-label">
-            Nombre
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="nombre" className="block text-sm font-medium text-zinc-300 mb-2">
+            Nombre del paciente
           </label>
           <input
             id="nombre"
@@ -281,13 +243,13 @@ export default function GeneralForm({ data, onChange }) {
             value={data.nombre || ""}
             onChange={(e) => handleChange("nombre", e.target.value)}
             onBlur={() => handleBlur("nombre")}
-            placeholder="Ingrese su nombre"
+            placeholder="Ingrese su nombre del paciente"
             required
           />
-          {errors.nombre && <div className="invalid-feedback">{errors.nombre}</div>}
+          {touched.nombre && errors.nombre && <p className="text-red-400 text-sm mt-1">{errors.nombre}</p>}
         </div>
-        <div className="col-6">
-          <label htmlFor="apellidos" className="form-label">
+        <div>
+          <label htmlFor="apellidos" className="block text-sm font-medium text-zinc-300 mb-2">
             Apellidos
           </label>
           <input
@@ -299,14 +261,14 @@ export default function GeneralForm({ data, onChange }) {
             placeholder="Ingrese sus apellidos"
             required
           />
-          {errors.apellidos && <div className="invalid-feedback">{errors.apellidos}</div>}
+          {touched.apellidos && errors.apellidos && <p className="text-red-400 text-sm mt-1">{errors.apellidos}</p>}
         </div>
       </div>
 
       {/* Fila 2: Edad y Sexo (2 columnas iguales) */}
-      <div className="row mb-3">
-        <div className="col-6">
-          <label htmlFor="edad" className="form-label">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="edad" className="block text-sm font-medium text-zinc-300 mb-2">
             Edad
           </label>
           <input
@@ -321,10 +283,10 @@ export default function GeneralForm({ data, onChange }) {
             max="120"
             required
           />
-          {errors.edad && <div className="invalid-feedback">{errors.edad}</div>}
+          {touched.edad && errors.edad && <p className="text-red-400 text-sm mt-1">{errors.edad}</p>}
         </div>
-        <div className="col-6">
-          <label htmlFor="sexo" className="form-label">
+        <div>
+          <label htmlFor="sexo" className="block text-sm font-medium text-zinc-300 mb-2">
             Sexo
           </label>
           <select
@@ -339,14 +301,14 @@ export default function GeneralForm({ data, onChange }) {
             <option value="masculino">Masculino</option>
             <option value="femenino">Femenino</option>
           </select>
-          {errors.sexo && <div className="invalid-feedback">{errors.sexo}</div>}
+          {touched.sexo && errors.sexo && <p className="text-red-400 text-sm mt-1">{errors.sexo}</p>}
         </div>
       </div>
 
       {/* Fila 3: Sector y Zona (2 columnas iguales) */}
-      <div className="row mb-3">
-        <div className="col-6">
-          <label htmlFor="sector" className="form-label">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="sector" className="block text-sm font-medium text-zinc-300 mb-2">
             Sector
           </label>
           <select
@@ -366,10 +328,10 @@ export default function GeneralForm({ data, onChange }) {
             <option value="sur">Sur</option>
             <option value="industrial">Industrial</option>
           </select>
-          {errors.sector && <div className="invalid-feedback">{errors.sector}</div>}
+          {touched.sector && errors.sector && <p className="text-red-400 text-sm mt-1">{errors.sector}</p>}
         </div>
-        <div className="col-6">
-          <label htmlFor="zona" className="form-label">
+        <div>
+          <label htmlFor="zona" className="block text-sm font-medium text-zinc-300 mb-2">
             Zona
           </label>
           <select
@@ -389,14 +351,14 @@ export default function GeneralForm({ data, onChange }) {
                 </option>
               ))}
           </select>
-          {errors.zona && <div className="invalid-feedback">{errors.zona}</div>}
+          {touched.zona && errors.zona && <p className="text-red-400 text-sm mt-1">{errors.zona}</p>}
         </div>
       </div>
 
       {/* Fila 4: Dirección (1 columna de ancho completo) */}
-      <div className="row mb-3">
-        <div className="col-12">
-          <label htmlFor="direccion" className="form-label">
+      <div>
+        <div>
+          <label htmlFor="direccion" className="block text-sm font-medium text-zinc-300 mb-2">
             Dirección
           </label>
           <input
@@ -408,14 +370,14 @@ export default function GeneralForm({ data, onChange }) {
             placeholder="Calle, número"
             required
           />
-          {errors.direccion && <div className="invalid-feedback">{errors.direccion}</div>}
+          {touched.direccion && errors.direccion && <p className="text-red-400 text-sm mt-1">{errors.direccion}</p>}
         </div>
       </div>
 
       {/* Fila 5: Teléfono y Correo Electrónico (2 columnas iguales) */}
-      <div className="row mb-3">
-        <div className="col-6">
-          <label htmlFor="telefono" className="form-label">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="telefono" className="block text-sm font-medium text-zinc-300 mb-2">
             Teléfono
           </label>
           <input
@@ -428,10 +390,10 @@ export default function GeneralForm({ data, onChange }) {
             placeholder="04121234567"
             required
           />
-          {errors.telefono && <div className="invalid-feedback">{errors.telefono}</div>}
+          {touched.telefono && errors.telefono && <p className="text-red-400 text-sm mt-1">{errors.telefono}</p>}
         </div>
-        <div className="col-6">
-          <label htmlFor="email" className="form-label">
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-zinc-300 mb-2">
             Correo Electrónico
           </label>
           <input
@@ -444,14 +406,14 @@ export default function GeneralForm({ data, onChange }) {
             placeholder="correo@ejemplo.com"
             required
           />
-          {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+          {touched.email && errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
         </div>
       </div>
 
-      {/* Fila 6: Ocupación (2 columnas iguales) */}
-      <div className="row mb-3">
-        <div className="col-6">
-          <label htmlFor="ocupacion_madre" className="form-label">
+      {/* Ocupación Madre y Padre */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="ocupacion_madre" className="block text-sm font-medium text-zinc-300 mb-2">
             Ocupación Madre
           </label>
           <input
@@ -463,10 +425,12 @@ export default function GeneralForm({ data, onChange }) {
             placeholder="Ingrese la ocupación de su madre"
             required
           />
-          {errors.ocupacion_madre && <div className="invalid-feedback">{errors.ocupacion_madre}</div>}
+          {touched.ocupacion_madre && errors.ocupacion_madre && (
+            <p className="text-red-400 text-sm mt-1">{errors.ocupacion_madre}</p>
+          )}
         </div>
-        <div className="col-6">
-          <label htmlFor="ocupacion_padre" className="form-label">
+        <div>
+          <label htmlFor="ocupacion_padre" className="block text-sm font-medium text-zinc-300 mb-2">
             Ocupación Padre
           </label>
           <input
@@ -478,15 +442,17 @@ export default function GeneralForm({ data, onChange }) {
             placeholder="Ingrese la ocupación de su padre"
             required
           />
-          {errors.ocupacion_padre && <div className="invalid-feedback">{errors.ocupacion_padre}</div>}
-        </div>
+          {touched.ocupacion_padre && errors.ocupacion_padre && (
+            <p className="text-red-400 text-sm mt-1">{errors.ocupacion_padre}</p>
+          )}
+        </div>  
       </div>
       
 
       {/* Fila 7: Institución (1 columna de ancho completo) */}
-      <div className="row mb-3">
-        <div className="col-12">
-          <label htmlFor="institucion" className="form-label">
+      <div>
+        <div>
+          <label htmlFor="institucion" className="block text-sm font-medium text-zinc-300 mb-2">
             Institución
           </label>
           <select
@@ -503,18 +469,20 @@ export default function GeneralForm({ data, onChange }) {
             <option value="institucion_c">Institución C</option>
             <option value="institucion_d">Institución D</option>
           </select>
-          {errors.institucion && <div className="invalid-feedback">{errors.institucion}</div>}
+          {touched.institucion && errors.institucion && <p className="text-red-400 text-sm mt-1">{errors.institucion}</p>} 
         </div>
       </div>
-      <div className="form-check mt-4">
+      {/* Fila 8: Venopunción (checkbox) */}
+      <div className="flex items-start gap-3 p-4 bg-zinc-800/50 rounded-lg border border-zinc-700">
         <input
-          className="form-check-input"
+          className="mt-1 w-4 h-4 rounded border-zinc-600 bg-zinc-800 text-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-0 cursor-pointer"
           type="checkbox"
           id="venopuncion"
           checked={!!data.venopuncion}
           onChange={(e) => handleChange("venopuncion", e.target.checked)}
+          
         />
-        <label className="form-check-label" htmlFor="venopuncion">
+        <label className="text-sm text-zinc-300 cursor-pointer select-none" htmlFor="venopuncion">
           Acepto participar en la venopunción para la recolección de muestras.
         </label>
       </div>

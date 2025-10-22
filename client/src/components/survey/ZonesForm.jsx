@@ -47,87 +47,41 @@ export default function ZonasExposicionForm({ data, onChange, taller, fabrica, l
     return items.some(item => data[item.id]);
   };
 
+  const renderCheckboxGroup = (title, items, hasSelected) => (
+    <div
+      className={`p-5 rounded-lg border-2 transition-all ${
+        hasSelected ? "bg-zinc-800/50 border-green-500" : "bg-zinc-900/50 border-zinc-700"
+      }`}
+    >
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold text-white">{title}</h3>
+        {hasSelected && <CheckCircle className="text-green-500" size={20} />}
+      </div>
+
+      <div className="space-y-3">
+        {items.map((item) => (
+          <label key={item.id} className="flex items-start gap-3 cursor-pointer group">
+            <input
+              type="checkbox"
+              checked={data[item.id] || false}
+              onChange={(e) => handleChange(item.id, e.target.checked)}
+              className="rounded border-zinc-600 bg-zinc-800 text-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-0 cursor-pointer"
+            />
+            <span className="text-sm text-zinc-300 group-hover:text-white transition-colors select-none">
+              {item.label}
+            </span>
+          </label>
+        ))}
+      </div>
+    </div>
+  )
+
   return (
-    <form>
-      <label className="form-label">¿Reside cerca o frecuenta a uno o más de los siguientes lugares?</label>
-      
-      <hr className="border-t border-white my-4" />
-      
-      {/* Sección Talleres */}
-      <div className={`card-shadow p-3 border rounded-3 transition-all mb-4 ${
-        hasSelection(taller) ? 'border-success' : ''
-      }`}>
-        <div className="d-flex align-items-center mb-3">
-          <h2 className="text-lg font-semibold mb-0 flex-grow-1">Talleres</h2>
-          {hasSelection(taller) && <CheckCircle className="text-success" size={20} />}
-        </div>
-        {taller.map((tallerItem) => (
-          <div key={tallerItem.id} className="form-check mb-3">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              id={`taller-${tallerItem.id}`}
-              checked={data[tallerItem.id] || false}
-              onChange={(e) => handleChange(tallerItem.id, e.target.checked)}
-            />
-            <label className="form-check-label" htmlFor={`taller-${tallerItem.id}`}>
-              {tallerItem.label}
-            </label>
-          </div>
-        ))}
-      </div>
-      
-      <hr className="border-t border-white my-4" />
-      
-      {/* Sección Fábricas */}
-      <div className={`card-shadow p-3 border rounded-3 transition-all mb-4 ${
-        hasSelection(fabrica) ? 'border-success' : ''
-      }`}>
-        <div className="d-flex align-items-center mb-3">
-          <h2 className="text-lg font-semibold mb-0 flex-grow-1">Fábricas</h2>
-          {hasSelection(fabrica) && <CheckCircle className="text-success" size={20} />}
-        </div>
-        {fabrica.map((fabricaItem) => (
-          <div key={fabricaItem.id} className="form-check mb-3">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              id={`fabrica-${fabricaItem.id}`}
-              checked={data[fabricaItem.id] || false}
-              onChange={(e) => handleChange(fabricaItem.id, e.target.checked)}
-            />
-            <label className="form-check-label" htmlFor={`fabrica-${fabricaItem.id}`}>
-              {fabricaItem.label}
-            </label>
-          </div>
-        ))}
-      </div>
-      
-      <hr className="border-t border-white my-4" />
-      
-      {/* Sección Zonas de Exposición */}
-      <div className={`card-shadow p-3 border rounded-3 transition-all mb-4 ${
-        hasSelection(lugares) ? 'border-success' : ''
-      }`}>
-        <div className="d-flex align-items-center mb-3">
-          <h2 className="text-lg font-semibold mb-0 flex-grow-1">Zonas de Exposición</h2>
-          {hasSelection(lugares) && <CheckCircle className="text-success" size={20} />}
-        </div>
-        {lugares.map((lugarItem) => (
-          <div key={lugarItem.id} className="form-check mb-3">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              id={`lugar-${lugarItem.id}`}
-              checked={data[lugarItem.id] || false}
-              onChange={(e) => handleChange(lugarItem.id, e.target.checked)}
-            />
-            <label className="form-check-label" htmlFor={`lugar-${lugarItem.id}`}>
-              {lugarItem.label}
-            </label>
-          </div>
-        ))}
-      </div>
+    <form className="space-y-6">
+      <p className="text-zinc-200 text-sm mb-4">¿Reside cerca o frecuenta a uno o más de los siguientes lugares?</p>
+      {renderCheckboxGroup("Talleres", taller, hasSelection(taller))}
+      {renderCheckboxGroup("Fábricas", fabrica, hasSelection(fabrica))}
+      {renderCheckboxGroup("Zonas de Exposición", lugares, hasSelection(lugares))}
     </form>
   )
 };

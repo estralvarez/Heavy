@@ -6,7 +6,7 @@ import ZonasExposicionForm from "./survey/ZonesForm";
 import EnfermedadForm from "./survey/IllnessForm";
 import AlimentosForm from "./survey/FoodForm";
 import SaludForm from "./survey/HealthForm";
-import RegisterCompletd from "./survey/RegisterCompletd";
+import RegisterCompleted from "./survey/RegisterCompleted";
 import "../index.css";
 
 export default function RegistroPage() {
@@ -15,7 +15,7 @@ export default function RegistroPage() {
   const [enfermedadData, setEnfermedadData] = useState({});
   const [alimentosData, setAlimentosData] = useState({});
   const [habitosSaludData, setHabitosSaludData] = useState({});
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(6);
   const [showConsentModal, setShowConsentModal] = useState(false);
   const [consentAccepted, setConsentAccepted] = useState(false);
   const [venipunctureAccepted, setVenipunctureAccepted] = useState(false);
@@ -282,7 +282,8 @@ export default function RegistroPage() {
   }, []);
 
   return (
-    <div className="container py-5">
+    
+    <div className="bg-zinc-950 min-h-screen pb-10">
       <ConsentModal
         show={showConsentModal}
         onAccept={handleConsentAccept}
@@ -294,30 +295,38 @@ export default function RegistroPage() {
       />
 
       {/* Header */}
-      <header className="bg-dark border-bottom">
-        <div className="container d-flex align-items-center justify-content-between py-2">
-          <span className="h4 mb-0 fw-bold">HeavyApp</span>
-          <span className="text-white mb-0">Paso {currentStep} de {totalSteps}</span>
+      <header className="bg-zinc-900/95 backdrop-blur-sm border-b border-red-600/20 shadow-lg">
+        <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-4">
+          <div className="flex items-center gap-2 text-red-500 hover:text-red-400 transition-all duration-300 group cursor-pointer">
+          <span className="text-2xl font-bold">HeavyApp</span>
+        </div>
+          <span className="text-white mb-0">
+            Paso {currentStep} de {totalSteps}
+          </span>
         </div>
       </header>
 
       {/* Barra de progreso */}
-      <div className="container my-3">
-        <div className="progress" style={{ height: "8px" }}>
-          <div className="progress-bar bg-danger" role="progressbar"
-            style={{ width: `${(currentStep / totalSteps) * 100}%` }} />
+      <div className="max-w-7xl mx-auto flex items-center justify-center py-4">
+        <div className="w-[80%] bg-gray-300 rounded-full h-2.5">
+          <div
+            className="bg-red-700 h-2.5 rounded-full transition-all duration-300"
+            style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+          />
         </div>
       </div>
 
-      {/* Formulario principal */}
-      <div className="container py-4">
-        {currentStep < totalSteps ? (
-          <div className="card-shadow mx-auto" style={{ maxWidth: "600px" }}>
-            <div className="card-body">
-              <h2 className="card-title">{steps[currentStep - 1].title}</h2>
-              <p className="card-text">{steps[currentStep - 1].description}</p>
 
-              <div style={{ minHeight: "300px" }}>
+      {/* Formulario principal */}
+      <div className="w-[90%] mx-auto flex items-center justify-center mb-2">
+        {currentStep < totalSteps ? (
+          <div className="card-shadow mx-auto">
+            <div className="p-6">
+              <h2 className="text-red-500 text-2xl font-bold mb-4">{steps[currentStep - 1].title}</h2>
+              <p className="text-white mb-4">{steps[currentStep - 1].description}</p>
+              <hr className="border-red-600/20 border-2 my-4" />
+
+              <div >
 
               {currentStep === 1 && <GeneralForm data={generalData} onChange={setGeneralData} />} 
                 {currentStep === 2 && <ZonasExposicionForm 
@@ -344,9 +353,9 @@ export default function RegistroPage() {
                     agua={agua}
                 />}
               </div>
-              <div className="d-flex justify-content-end mt-4">
+              <div className="flex justify-end mt-8">
                 <button 
-                  className="btn btn-danger" 
+                  className="group bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:opacity-50 inline-flex items-center gap-2"
                   onClick={handleNext}
                   disabled={isLoading}
                 >
@@ -356,23 +365,27 @@ export default function RegistroPage() {
             </div>
           </div>
         ) : (
-          <div className="card-shadow mx-auto" style={{ maxWidth: "600px" }}>
-            <div className="card-body">
-              <RegisterCompletd />
-              <div className="d-flex justify-content-end mt-4">
-                <button 
-                  className="btn btn-success" 
+          <div className="card-shadow mx-auto max-w-2xl">
+            <div className="p-6">
+              <RegisterCompleted />
+              <div className="flex justify-end mt-8">
+                <button
+                  className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
                   onClick={handleSubmit}
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Procesando...' : 'Finalizar Registro'}
+                  {isLoading ? "Procesando..." : "Finalizar Registro"}
                 </button>
               </div>
             </div>
           </div>
         )}
-        <div className="text-center mt-3">Sus datos se guardan automáticamente</div>
       </div>
+      {currentStep < totalSteps ? (
+        <div className="text-center mt-1 py-2 text-gray-600">Sus datos NO se guardan automáticamente</div>
+      ) : (
+        <div className="text-center mt-1 py-2 text-green-500">Sus datos se guardaron satisfactoriamente</div>
+      )}
     </div>
   );
 }

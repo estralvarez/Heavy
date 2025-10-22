@@ -51,117 +51,113 @@ export default function EnfermedadForm({ data, onChange, sintomas, patologias })
     // Verificar si hay diagnóstico de intoxicación
     const hasDiagnostico = data.dignostico_anterior === 'si' || data.dignostico_anterior === 'no';
 
-	return (
-		<form>
-			<hr className="border-t border-white my-4" />
-			{/* Sección Síntomas */}
-			<div className={`card-shadow p-3 border rounded-3 transition-all mb-4 ${
-				hasSelection(sintomas) ? 'border-success' : ''
-			}`}>
-				<div className="d-flex align-items-center mb-3">
-					<h2 className="text-lg font-semibold mb-0 flex-grow-1">Síntomas</h2>
-					{hasSelection(sintomas) && <CheckCircle className="text-success" size={20} />}
-				</div>
-				<label className="form-label">¿Presenta alguno de los siguientes síntomas?</label>
-				<hr className="border-t border-white my-1" />
-				{sintomas.map((sintoma) => (
-					<div key={sintoma.id} className="form-check mb-3">
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id={`sintoma-${sintoma.id}`}
-							checked={data[sintoma.id] || false}
-							onChange={(e) => handleChange(sintoma.id, e.target.checked)}
-						/>
-						<label className="form-check-label" htmlFor={`sintoma-${sintoma.id}`}>
-							{sintoma.label}
-						</label>
-					</div>
-				))}
-			</div>
+	const renderCheckboxGroup = (
+    title,
+    description,
+    items,
+    hasSelected,
+  ) => (
+    <div
+      className={`p-5 rounded-lg border-2 transition-all ${
+        hasSelected ? "bg-zinc-800/50 border-green-500" : "bg-zinc-900/50 border-zinc-700"
+      }`}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-lg font-semibold text-white">{title}</h3>
+        {hasSelected && <CheckCircle className="text-green-500" size={20} />}
+      </div>
 
-			<hr className="border-t border-white my-4" />
-			
-			{/* Sección Patologías */}
-			<div className={`card-shadow p-3 border rounded-3 transition-all mb-4 ${
-				hasSelection(patologias) ? 'border-success' : ''
-			}`}>
-				<div className="d-flex align-items-center mb-3">
-					<h2 className="text-lg font-semibold mb-0 flex-grow-1">Patologías</h2>
-					{hasSelection(patologias) && <CheckCircle className="text-success" size={20} />}
+      <p className="text-sm text-zinc-400 mb-4">{description}</p>
+
+      <div className="space-y-3">
+        {items.map((item) => (
+          <label key={item.id} className="flex items-start gap-3 cursor-pointer group">
+            <input
+              type="checkbox"
+              checked={data[item.id] || false}
+              onChange={(e) => handleChange(item.id, e.target.checked)}
+              className="mt-0.5 w-4 h-4 rounded border-zinc-600 bg-zinc-800 text-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-0 cursor-pointer"
+            />
+            <span className="text-sm text-zinc-300 group-hover:text-white transition-colors select-none">
+              {item.label}
+            </span>
+          </label>
+        ))}
+      </div>
+    </div>
+  )
+
+	return (
+		<form className="space-y-6">
+			{renderCheckboxGroup(
+				"Síntomas",
+				"¿Presenta alguno de los siguientes síntomas?",
+				sintomas,
+				hasSelection(sintomas),
+			)}
+
+			{renderCheckboxGroup(
+				"Patologías",
+				"¿Padece de alguna de estas patologías?",
+				patologias,
+				hasSelection(patologias),
+			)}
+
+			{/* Diagnóstico de Intoxicación */}
+			<div
+				className={`p-5 rounded-lg border-2 transition-all ${
+				hasDiagnostico ? "bg-zinc-800/50 border-green-500" : "bg-zinc-900/50 border-zinc-700"
+				}`}
+			>
+				<div className="flex items-center justify-between mb-3">
+				<h3 className="text-lg font-semibold text-white">Diagnóstico de Intoxicación</h3>
+				{hasDiagnostico && <CheckCircle className="text-green-500" size={20} />}
 				</div>
-				<label className="form-label">¿Padece de alguna de estas patologías?</label>
-				<hr className="border-t border-white my-1" />
-				{patologias.map((patologia) => (
-					<div key={patologia.id} className="form-check mb-3">
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id={`patologia-${patologia.id}`}
-							checked={data[patologia.id] || false}
-							onChange={(e) => handleChange(patologia.id, e.target.checked)}
-						/>
-						<label className="form-check-label" htmlFor={`patologia-${patologia.id}`}>
-							{patologia.label}
-						</label>
-					</div>	
-				))}
-			</div>
-			{/* Sección Diagnóstico de Intoxicación por Metal */}
-			<div className={`card-shadow p-3 border rounded-3 transition-all mb-4 ${
-				hasDiagnostico ? 'border-success' : ''
-			}`}>
-				<div className="d-flex align-items-center mb-3">
-					<h2 className="text-lg font-semibold mb-0 flex-grow-1">Diagnóstico de Intoxicación</h2>
-					{hasDiagnostico && <CheckCircle className="text-success" size={20} />}
+
+				<p className="text-sm text-zinc-400 mb-4">¿Tiene algún diagnóstico previo sobre intoxicación por metal?</p>
+
+				<div className="flex gap-4 mb-4">
+				<label className="flex items-center gap-2 cursor-pointer">
+					<input
+					type="radio"
+					name="dignostico_anterior"
+					value="si"
+					checked={data.dignostico_anterior === "si"}
+					onChange={(e) => handleChange("dignostico_anterior", e.target.value)}
+					className="w-4 h-4 border-zinc-600 bg-zinc-800 text-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-0 cursor-pointer"
+					/>
+					<span className="text-sm text-zinc-300">Sí</span>
+				</label>
+
+				<label className="flex items-center gap-2 cursor-pointer">
+					<input
+					type="radio"
+					name="dignostico_anterior"
+					value="no"
+					checked={data.dignostico_anterior === "no"}
+					onChange={(e) => handleChange("dignostico_anterior", e.target.value)}
+					className="w-4 h-4 border-zinc-600 bg-zinc-800 text-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-0 cursor-pointer"
+					/>
+					<span className="text-sm text-zinc-300">No</span>
+				</label>
 				</div>
-				<label className="form-label">¿Tiene algún diagnóstico previo sobre intoxicación por metal?</label>
-				<div className="d-flex gap-4 mb-3">
-					<div className="form-check">
-						<input
-							type="radio"
-							className="form-check-input"
-							id="dignostico_anterior_si"
-							name="dignostico_anterior"
-							value="si"
-							checked={data.dignostico_anterior === 'si'}
-							onChange={(e) => handleChange('dignostico_anterior', e.target.value)}
-						/>
-						<label className="form-check-label" htmlFor="dignostico_anterior_si">
-							Sí
-						</label>
-					</div>
-					<div className="form-check">
-						<input
-							type="radio"
-							className="form-check-input"
-							id="dignostico_anterior_no"
-							name="dignostico_anterior"
-							value="no"
-							checked={data.dignostico_anterior === 'no'}
-							onChange={(e) => handleChange('dignostico_anterior', e.target.value)}
-						/>
-						<label className="form-check-label" htmlFor="dignostico_anterior_no">
-							No
-						</label>
-					</div>
+
+				{data.dignostico_anterior === "si" && (
+				<div>
+					<label htmlFor="metal_dignostico" className="block text-sm font-medium text-zinc-300 mb-2">
+					Indique el metal:
+					</label>
+					<input
+					id="metal_dignostico"
+					type="text"
+					value={data.metal_dignostico || ""}
+					onChange={(e) => handleChange("metal_dignostico", e.target.value)}
+					placeholder="Especifique el metal diagnosticado"
+					className="w-full px-4 py-3 rounded-lg bg-zinc-800 border-2 border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20 transition-all"
+					/>
 				</div>
-				
-				{/* Mostrar input de metal solo si selecciona "Sí" */}
-				{data.dignostico_anterior === 'si' && (
-					<div className="mb-3">
-						<label htmlFor="metal_dignostico" className="form-label">Indique el metal:</label>
-						<input
-							type="text"
-							className="form-control"
-							id="metal_dignostico"
-							value={data.metal_dignostico || ''}
-							onChange={(e) => handleChange('metal_dignostico', e.target.value)}
-							placeholder="Especifique el metal diagnosticado"
-						/>
-					</div>
 				)}
 			</div>
-		</form>
+    	</form>
 	)
 };

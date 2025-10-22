@@ -35,274 +35,114 @@ export default function SaludForm({ data, onChange, transporte, suplementos, agu
     const hasRespuestaJoyeria = data.joyeria === 'True' || data.joyeria === 'False';
     const hasRespuestasDicotomicas = hasRespuestaFuma && hasRespuestaActividad && hasRespuestaBombillos && hasRespuestaTecho && hasRespuestaJoyeria;
     
-    return (
-        <form>
-            <hr className="border-t border-white my-4" />
-            {/* Sección Medio de transporte */}
-            <div className={`card-shadow p-3 border rounded-3 transition-all mb-4 ${
-                hasSelection(transporte) ? 'border-success' : ''
-            }`}>
-                <div className="d-flex align-items-center mb-3">
-                    <h2 className="text-lg font-semibold mb-0 flex-grow-1">Medio de Transporte</h2>
-                    {hasSelection(transporte) && <CheckCircle className="text-success" size={20} />}
-                </div>
-                <label className="form-label">¿Qué medio de transporte usa habitualmente?</label>
-                <div className="grid grid-cols-2 gap-4 mt-3">
-                    {transporte.map((transporte) => (
-                        <div key={transporte.id} className="form-check">
-                            <input
-                                type="checkbox"
-                                className="form-check-input"
-                                id={`transporte-${transporte.id}`}
-                                checked={data[transporte.id] || false}
-                                onChange={(e) => {
-                                    handleChange(transporte.id, e.target.checked);
-                                }}
-                            />
-                            <label className="form-check-label" htmlFor={`transporte-${transporte.id}`}>
-                                {transporte.label}
-                            </label>
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <hr className="border-t border-white my-4" />
+    const renderCheckboxGroup = (
+    title,
+    description,
+    items,
+    hasSelected,
+  ) => (
+    <div
+      className={`p-5 rounded-lg border-2 transition-all ${
+        hasSelected ? "bg-zinc-800/50 border-green-500" : "bg-zinc-900/50 border-zinc-700"
+      }`}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-lg font-semibold text-white">{title}</h3>
+        {hasSelected && <CheckCircle className="text-green-500" size={20} />}
+      </div>
 
-            {/* Sección Productos/Suplementos */}
-            <div className={`card-shadow p-3 border rounded-3 transition-all mb-4 ${
-                hasSelection(suplementos) ? 'border-success' : ''
-            }`}>
-                <div className="d-flex align-items-center mb-3">
-                    <h2 className="text-lg font-semibold mb-0 flex-grow-1">Productos y Suplementos</h2>
-                    {hasSelection(suplementos) && <CheckCircle className="text-success" size={20} />}
-                </div>
-                <label className="form-label">¿Consume alguno de estos productos?</label>
-                <div className="grid grid-cols-2 gap-4 mt-3">
-                    {suplementos.map((suplemento) => (
-                        <div key={suplemento.id} className="form-check">
-                            <input
-                                type="checkbox"
-                                className="form-check-input"
-                                id={`producto-${suplemento.id}`}
-                                checked={data[suplemento.id] || false}
-                                onChange={(e) => {
-                                    handleChange(suplemento.id, e.target.checked);
-                                }}
-                            />
-                            <label className="form-check-label" htmlFor={`producto-${suplemento.id}`}>
-                                {suplemento.label}
-                            </label>
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <hr className="border-t border-white my-4" />
+      <p className="text-sm text-zinc-400 mb-4">{description}</p>
 
-            {/* Sección Agua */}
-            <div className={`card-shadow p-3 border rounded-3 transition-all mb-4 ${
-                hasSelection(agua) ? 'border-success' : ''
-            }`}>
-                <div className="d-flex align-items-center mb-3">
-                    <h2 className="text-lg font-semibold mb-0 flex-grow-1">Tipo de Agua</h2>
-                    {hasSelection(agua) && <CheckCircle className="text-success" size={20} />}
-                </div>
-                <label className="form-label">¿Qué tipo de agua suele consumir?</label>
-                <div className="grid grid-cols-3 gap-4 mt-3">
-                    {agua.map((agua) => (
-                        <div key={agua.id} className="form-check">
-                            <input
-                                type="checkbox"
-                                className="form-check-input"
-                                id={`agua-${agua.id}`}
-                                checked={data[agua.id] || false}
-                                onChange={(e) => {
-                                    handleChange(agua.id, e.target.checked);
-                                }}
-                            />
-                            <label className="form-check-label" htmlFor={`agua-${agua.id}`}>
-                                {agua.label}
-                            </label>
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <hr className="border-t border-white my-4" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {items.map((item) => (
+          <label key={item.id} className="flex items-start gap-3 cursor-pointer group">
+            <input
+              type="checkbox"
+              checked={data[item.id] || false}
+              onChange={(e) => handleChange(item.id, e.target.checked)}
+              className="mt-0.5 w-4 h-4 rounded border-zinc-600 bg-zinc-800 text-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-0 cursor-pointer"
+            />
+            <span className="text-sm text-zinc-300 group-hover:text-white transition-colors select-none">
+              {item.label}
+            </span>
+          </label>
+        ))}
+      </div>
+    </div>
+  )
 
-            {/* Sección Preguntas dicotómicas */}
-            <div className={`card-shadow p-3 border rounded-3 transition-all mb-4 ${
-                hasRespuestasDicotomicas ? 'border-success' : ''
-            }`}>
-                <div className="d-flex align-items-center mb-3">
-                    <h2 className="text-lg font-semibold mb-0 flex-grow-1">Hábitos de Salud</h2>
-                    {hasRespuestasDicotomicas && <CheckCircle className="text-success" size={20} />}
-                </div>
-                
-                {/* Pregunta 1: Exposición al humo */}
-                <div className="mb-4">
-                    <label className="form-label">
-                        ¿Ha estado expuesto al humo del cigarrillo en alguna de estas formas?
-                    </label>
-                    <div className="d-flex gap-4 mt-2">
-                        <div className="form-check">
-                            <input
-                                type="radio"
-                                className="form-check-input"
-                                id="expuesto_humo_si"
-                                name="fuma"
-                                value="True"
-                                checked={data.fuma === "True"}
-                                onChange={(e) => handleChange("fuma", e.target.value)}
-                            />
-                            <label className="form-check-label" htmlFor="expuesto_humo_si">Sí</label>
-                        </div>
-                        <div className="form-check">
-                            <input
-                                type="radio"
-                                className="form-check-input"
-                                id="expuesto_humo_no"
-                                name="fuma"
-                                value="False"
-                                checked={data.fuma === "False"}
-                                onChange={(e) => handleChange("fuma", e.target.value)}
-                            />
-                            <label className="form-check-label" htmlFor="expuesto_humo_no">No</label>
-                        </div>
-                    </div>
-                </div>
+  const renderRadioQuestion = (question, fieldName) => (
+    <div className="mb-6 last:mb-0">
+      <p className="text-sm text-zinc-300 mb-3">{question}</p>
+      <div className="flex gap-4">
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
+            name={fieldName}
+            value="True"
+            checked={data[fieldName] === "True"}
+            onChange={(e) => handleChange(fieldName, e.target.value)}
+            className="w-4 h-4 border-zinc-600 bg-zinc-800 text-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-0 cursor-pointer"
+          />
+          <span className="text-sm text-zinc-300">Sí</span>
+        </label>
 
-                {/* Pregunta 2: Actividad física */}
-                <div className="mb-4">
-                    <label className="form-label">
-                        ¿Realiza usted actividad física o deportiva?
-                    </label>
-                    <div className="d-flex gap-4 mt-2">
-                        <div className="form-check">
-                            <input
-                                type="radio"
-                                className="form-check-input"
-                                id="actividad_fisica_si"
-                                name="actividad"
-                                value="True"
-                                checked={data.actividad === "True"}
-                                onChange={(e) => handleChange("actividad", e.target.value)}
-                            />
-                            <label className="form-check-label" htmlFor="actividad_fisica_si">Sí</label>
-                        </div>
-                        <div className="form-check">
-                            <input
-                                type="radio"
-                                className="form-check-input"
-                                id="actividad_fisica_no"
-                                name="actividad"
-                                value="False"
-                                checked={data.actividad === "False"}
-                                onChange={(e) => handleChange("actividad", e.target.value)}
-                            />
-                            <label className="form-check-label" htmlFor="actividad_fisica_no">No</label>
-                        </div>
-                    </div>
-                </div>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
+            name={fieldName}
+            value="False"
+            checked={data[fieldName] === "False"}
+            onChange={(e) => handleChange(fieldName, e.target.value)}
+            className="w-4 h-4 border-zinc-600 bg-zinc-800 text-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-0 cursor-pointer"
+          />
+          <span className="text-sm text-zinc-300">No</span>
+        </label>
+      </div>
+    </div>
+  )
 
-                {/* Pregunta 3: Bombillos ahorradores */}
-                <div className="mb-4">
-                    <label className="form-label">
-                        ¿En su hogar usan bombillos ahorradores como fuente de iluminación?
-                    </label>
-                    <div className="d-flex gap-4 mt-2">
-                        <div className="form-check">
-                            <input
-                                type="radio"
-                                className="form-check-input"
-                                id="bombillos_ahorradores_si"
-                                name="bombillos"
-                                value="True"
-                                checked={data.bombillos === "True"}
-                                onChange={(e) => handleChange("bombillos", e.target.value)}
-                            />
-                            <label className="form-check-label" htmlFor="bombillos_ahorradores_si">Sí</label>
-                        </div>
-                        <div className="form-check">
-                            <input
-                                type="radio"
-                                className="form-check-input"
-                                id="bombillos_ahorradores_no"
-                                name="bombillos"
-                                value="False"
-                                checked={data.bombillos === "False"}
-                                onChange={(e) => handleChange("bombillos", e.target.value)}
-                            />
-                            <label className="form-check-label" htmlFor="bombillos_ahorradores_no">No</label>
-                        </div>
-                    </div>
-                </div>
+  return (
+    <form className="space-y-6">
+      {renderCheckboxGroup(
+        "Medio de Transporte",
+        "¿Qué medio de transporte usa habitualmente?",
+        transporte,
+        hasSelection(transporte),
+      )}
 
-                {/* Pregunta 4: Techo de asbestos */}
-                <div className="mb-4">
-                    <label className="form-label">
-                        ¿Su hogar tiene techo de asbestos?
-                    </label>
-                    <div className="d-flex gap-4 mt-2">
-                        <div className="form-check">
-                            <input
-                                type="radio"
-                                className="form-check-input"
-                                id="techo_asbestos_si"
-                                name="techo"
-                                value="True"
-                                checked={data.techo === "True"}
-                                onChange={(e) => handleChange("techo", e.target.value)}
-                            />
-                            <label className="form-check-label" htmlFor="techo_asbestos_si">Sí</label>
-                        </div>
-                        <div className="form-check">
-                            <input
-                                type="radio"
-                                className="form-check-input"
-                                id="techo_asbestos_no"
-                                name="techo"
-                                value="False"
-                                checked={data.techo === "False"}
-                                onChange={(e) => handleChange("techo", e.target.value)}
-                            />
-                            <label className="form-check-label" htmlFor="techo_asbestos_no">No</label>
-                        </div>
-                    </div>
-                </div>
+      {renderCheckboxGroup(
+        "Productos y Suplementos",
+        "¿Consume alguno de estos productos?",
+        suplementos,
+        hasSelection(suplementos),
+      )}
 
-                {/* Pregunta 5: Joyería */}
-                <div className="mb-4">
-                    <label className="form-label">
-                        ¿Usa usted algún tipo de joyería?
-                    </label>
-                    <div className="d-flex gap-4 mt-2">
-                        <div className="form-check">
-                            <input
-                                type="radio"
-                                className="form-check-input"
-                                id="joyeria_si"
-                                name="joyeria"
-                                value="True"
-                                checked={data.joyeria === "True"}
-                                onChange={(e) => handleChange("joyeria", e.target.value)}
-                            />
-                            <label className="form-check-label" htmlFor="joyeria_si">Sí</label>
-                        </div>
-                        <div className="form-check">
-                            <input
-                                type="radio"
-                                className="form-check-input"
-                                id="joyeria_no"
-                                name="joyeria"
-                                value="False"
-                                checked={data.joyeria === "False"}
-                                onChange={(e) => handleChange("joyeria", e.target.value)}
-                            />
-                            <label className="form-check-label" htmlFor="joyeria_no">No</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr className="border-t border-white my-4" />
-        </form>
+      {renderCheckboxGroup("Tipo de Agua", "¿Qué tipo de agua suele consumir?", agua, hasSelection(agua))}
+
+      {/* Hábitos de Salud */}
+      <div
+        className={`p-5 rounded-lg border-2 transition-all ${
+          hasRespuestasDicotomicas ? "bg-zinc-800/50 border-green-500" : "bg-zinc-900/50 border-zinc-700"
+        }`}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-white">Hábitos de Salud</h3>
+          {hasRespuestasDicotomicas && <CheckCircle className="text-green-500" size={20} />}
+        </div>
+
+        <div className="space-y-6">
+          {renderRadioQuestion("¿Ha estado expuesto al humo del cigarrillo en alguna de estas formas?", "fuma")}
+
+          {renderRadioQuestion("¿Realiza usted actividad física o deportiva?", "actividad")}
+
+          {renderRadioQuestion("¿En su hogar usan bombillos ahorradores como fuente de iluminación?", "bombillos")}
+
+          {renderRadioQuestion("¿Su hogar tiene techo de asbestos?", "techo")}
+
+          {renderRadioQuestion("¿Usa usted algún tipo de joyería?", "joyeria")}
+        </div>
+      </div>
+    </form>
     )
 }
