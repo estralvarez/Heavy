@@ -1,6 +1,5 @@
 import { useState } from "react";
-import "../index.css";
-// Se importa Menu y X para el toggle del menú móvil
+import { Link } from "react-router-dom";
 import { FlaskConical, Menu, X } from "lucide-react"; 
 
 // --- Componente HeaderForm ---
@@ -26,10 +25,10 @@ const Header = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-4 md:px-6">
         
         {/* Logo/Brand */}
-        <div className="flex items-center gap-2 text-red-500 hover:text-red-400 transition-all duration-300 group cursor-pointer">
+        <Link to="/login" className="flex items-center gap-2 text-red-500 hover:text-red-400 transition-all duration-300 group">
           <FlaskConical size={32} className="group-hover:rotate-12 transition-transform duration-300" />
           <span className="text-2xl font-bold">HeavyApp</span>
-        </div>
+        </Link>
 
         {/* Botón de Menú (Hamburger) - Visible solo en móvil */}
         <button

@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/themes": "^3.2.1",
     "lucide-react": "^0.544.0",
+    "radix-ui": "^1.4.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.3"
