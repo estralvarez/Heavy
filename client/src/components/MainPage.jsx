@@ -47,15 +47,15 @@ const MainPage = () => {
                     className="group bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-red-600/50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     onClick={handleStart}
                   >
-                    Iniciar Registro
+                    Iniciar Formulario
                     <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
                   </button>
-                  <a
+                  {/* <a
                     href="#process"
                     className="border-2 border-red-600 text-red-500 hover:bg-red-600 hover:text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 hover:scale-105 text-center"
                   >
-                    Conocer el Proceso
-                </a>
+                    Conocer el Formulario
+                </a> */}
                 </>
               )}
             </div>
@@ -123,7 +123,7 @@ const MainPage = () => {
       <section id="process" className="py-16 md:py-24 border-b border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-16 space-y-4 animate-fade-in-up">
-            <h2 className="font-bold text-3xl md:text-4xl lg:text-5xl text-red-500">Proceso de Registro</h2>
+            <h2 className="font-bold text-3xl md:text-4xl lg:text-5xl text-red-500">Formulario</h2>
             <p className="text-lg md:text-xl text-zinc-300 max-w-3xl mx-auto leading-relaxed">
               Complete el formulario en 5 sencillos pasos. Su progreso se guarda automáticamente.
             </p>
@@ -161,7 +161,7 @@ const MainPage = () => {
                 ].map((step, idx, arr) => (
                   <div
                     key={step.num}
-                    className={`flex items-start gap-4 md:gap-6 py-6 px-4 md:px-6 rounded-xl hover:bg-zinc-800/50 transition-all duration-300 ${
+                    className={`flex items-start gap-4 md:gap-6 py-2 px-4 md:px-6 rounded-xl hover:bg-zinc-800/50 transition-all duration-300 ${
                       idx < arr.length - 1 ? "border-b border-red-600/20" : ""
                     }`}
                   >
@@ -176,13 +176,13 @@ const MainPage = () => {
                 ))}
               </div>
 
-              <div className="mt-10 text-center">
+              <div className="mt-5 text-center">
                 <button
                   onClick={handleStart}
                   disabled={loading}
                   className="group bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-10 rounded-xl text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-red-600/50 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2"
                 >
-                  Comenzar Registro
+                  Comenzar Formulario
                   <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
                 </button>
               </div>

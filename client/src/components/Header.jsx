@@ -44,7 +44,7 @@ const Header = () => {
           {[
             { href: "#about", label: "El Análisis" },
             { href: "#us", label: "Nosotros" },
-            { href: "#process", label: "Proceso" },
+            { href: "#process", label: "Registro" },
             { href: "#contact", label: "Contacto" },
           ].map((link) => (
             <a
@@ -67,9 +67,9 @@ const Header = () => {
         <div className="flex flex-col space-y-1 px-4 py-3">
           {[
             { href: "#about", label: "Acerca de" },
-            { href: "#process", label: "Proceso" },
+            { href: "#us", label: "Nosotros" },
+            { href: "#process", label: "Formulario" },
             { href: "#contact", label: "Contacto" },
-            { href: "#nosotros", label: "Nosotros" },
           ].map((link) => (
             <a
               key={link.href}

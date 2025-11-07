@@ -33,6 +33,24 @@
   --footer-dark: #333333;
 }
 
+* {
+  scroll-behavior: smooth;
+}
+
+section {
+  scroll-margin-top: 250px;
+}
+
+@media (min-width: 768px) {
+  section {
+    /* Aquí pones el valor que necesitas para PC */
+    /* (Probablemente la altura de tu header de escritorio) */
+    scroll-margin-top: 75px; 
+  }
+}
+
+
+
 html, body {
   font-family: "Geist", "Geist Fallback";
 }
