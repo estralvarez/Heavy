@@ -7,116 +7,6 @@ patient_bp = Blueprint('patients', __name__)
 def index():
     return render_template('index.html')
 
-@patient_bp.route('/api/pacientes/registro', methods=['POST'])
-def create_full_registration():
-    data = request.json
-    if not data:
-        return jsonify({'error': 'No data provided'}), 400
-
-    try:
-        # --- 1. Extraer todos los datos ---
-        general_data = data.get('datos_generales', {})
-        zonas_data = data.get('zonas_exposicion', {})
-        illness_data = data.get('antecedentes_patologicos', {})
-        food_data = data.get('habitos_alimenticios', {})
-        health_data = data.get('habitos_de_salud', {})
-
-        # --- 2. Crear Paciente (Paso 1) ---
-        new_patient = Patient(
-            nombre=general_data.get('nombre', '').strip(),
-            apellido=general_data.get('apellido', '').strip(),
-            edad=int(general_data.get('edad', 0)),
-            sexo=general_data.get('sexo', '').strip(),
-            sector=general_data.get('sector', '').strip(),
-            zona=general_data.get('zona', '').strip(),
-            direccion=general_data.get('direccion', '').strip(),
-            telefono=general_data.get('telefono', '').strip(),
-            email=general_data.get('email', '').strip(),
-            ocupacion_madre=general_data.get('ocupacion_madre', '').strip(),
-            ocupacion_padre=general_data.get('ocupacion_padre', '').strip(),
-            institucion=general_data.get('institucion', '').strip(),
-            venopuncion=bool(general_data.get('venopuncion', False))
-        )
-        session.add(new_patient)
-        
-        # Flush para obtener el ID del paciente sin hacer COMMIT
-        session.flush()
-        paciente_id = new_patient.id
-        if not paciente_id:
-             raise Exception("No se pudo crear el ID del paciente")
-
-        # --- 3. Crear Zonas (Paso 2) ---
-        nueva_zona = RiskZones(
-            paciente_id=paciente_id,
-            talleres=', '.join(zonas_data.get('talleres', [])),
-            industrias=', '.join(zonas_data.get('industrias', [])),
-            lugares=', '.join(zonas_data.get('lugares', []))
-        )
-        session.add(nueva_zona)
-
-        # --- 4. Crear Enfermedad (Paso 3) ---
-        nueva_enfermedad = Illness(
-            paciente_id=paciente_id,
-            sintomas=', '.join(illness_data.get('sintomas', [])),
-            patologias=', '.join(illness_data.get('patologias', [])),
-            metal=illness_data.get('metal', '')
-        )
-        session.add(nueva_enfermedad)
-
-        # --- 5. Crear Comida (Paso 4) ---
-        nueva_comida = Food(
-            paciente_id=paciente_id,
-            cereales=food_data.get('cereales', []),
-            leguminosas=food_data.get('leguminosas', []),
-            tuberculos=food_data.get('tuberculos', []),
-            carnes=food_data.get('carnes', []),
-            pescados=food_data.get('pescados', []),
-            pescados_procesados=food_data.get('pescados_procesados', []),
-            bebidas=food_data.get('bebidas', []),
-            huevos=food_data.get('huevos', []),
-            lacteos=food_data.get('lacteos', []),
-            frutas=food_data.get('frutas', []),
-            vegetales=food_data.get('vegetales', []),
-            azucar=food_data.get('azucar', []),
-            grasas=food_data.get('grasas', []),
-            chocolate=food_data.get('chocolate', [])
-        )
-        session.add(nueva_comida)
-
-        # --- 6. Crear Salud (Paso 5) ---
-        transporte = health_data.get('transporte', [])
-        agua = health_data.get('agua', [])
-        suplementos = health_data.get('suplementos', [])
-        
-        nueva_salud = Health(
-            paciente_id=paciente_id,
-            fuma=health_data.get('fuma'),
-            actividad=health_data.get('actividad'),
-            bombillos=health_data.get('bombillos'),
-            techo=health_data.get('techo'),
-            joyeria=health_data.get('joyeria'),
-            transporte=', '.join(transporte) if transporte else '',
-            agua=', '.join(agua) if agua else '',
-            suplementos=', '.join(suplementos) if suplementos else ''
-        )
-        session.add(nueva_salud)
-        
-        # --- 7. Confirmar todo (Transacción) ---
-        session.commit()
-        
-        return jsonify({
-            'paciente_id': paciente_id, 
-            'message': 'Paciente registrado exitosamente'
-        }), 201
-
-    except Exception as e:
-        # Si algo falla, se deshace toda la transacción
-        session.rollback()
-        print(f"[ERROR] Full registration failed: {str(e)}")
-        return jsonify({'error': f'Error en el registro: {str(e)}'}), 500
-
-# --- TODO Borrarlas si ya no se usan ---
-
 @patient_bp.route('/api/pacientes', methods=['POST'])
 def create_patient_general_data():
     if not request.json or 'datos_generales' not in request.json:
@@ -237,7 +127,7 @@ def create_food(paciente_id):
 def create_health_habits(paciente_id):
     paciente = session.query(Patient).get(paciente_id)
     if not paciente:
-         return jsonify({'error': 'Paciente no encontrado'}), 404
+        return jsonify({'error': 'Paciente no encontrado'}), 404
 
     health_data = request.json.get('habitos_de_salud', {})
     
@@ -257,12 +147,10 @@ def create_health_habits(paciente_id):
             agua=', '.join(agua) if agua else '',
             suplementos=', '.join(suplementos) if suplementos else ''
         )
-        
-        # --- ¡ESTA ES LA CORRECCIÓN! ---
         session.add(nueva_salud)
         session.commit()
         return jsonify({'health_id': nueva_salud.id, 'message': 'Hábitos de salud guardados exitosamente'}), 201
-    
     except Exception as e:
         session.rollback()
         return jsonify({'error': str(e)}), 500
+        
