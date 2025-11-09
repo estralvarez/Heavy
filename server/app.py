@@ -22,7 +22,7 @@ def create_app():
     # Inicializar extensiones
     CORS(app, resources={
         r"/api/*": {
-            "origins": allowed_origins,
+            "origins": "https://heavyapp.vercel.app",
             "methods": ["GET", "POST", "OPTIONS"],
             "allow_headers": ["Content-Type"]},
     })
