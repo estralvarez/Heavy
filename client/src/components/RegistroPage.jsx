@@ -219,7 +219,7 @@ export default function RegistroPage() {
 
         // 2. Enviar la única petición a la API
         console.log("Enviando payload completo:", payload);
-        const response = await postData(`/api/pacientes/registro-completo`, payload);
+        const response = await postData(`/api/pacientes/registro`, payload);
         
         // 3. Opcional: Guardar el ID retornado por el backend
         if (response && response.paciente_id) {
