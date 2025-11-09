@@ -142,12 +142,11 @@ export default function RegistroPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentStep]);
 
-  // Optimized API call function with loading state management
   const postData = useCallback(async (url, data) => {
     setIsLoading(true);
     try {
       const res = await fetch(`${API}${url}`, {
-        method: "POST",
+        method: ["GET", "POST", "OPTIONS"],
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
@@ -264,6 +263,7 @@ export default function RegistroPage() {
     navigate,
     setPacienteId // Añadido
   ]);
+
   const handleSubmit = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     navigate("/");

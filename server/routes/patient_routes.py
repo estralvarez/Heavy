@@ -7,7 +7,7 @@ patient_bp = Blueprint('patients', __name__)
 def index():
     return render_template('index.html')
 
-@patient_bp.route('/api/pacientes/registro-completo', methods=['POST'])
+@patient_bp.route('/api/pacientes/registro', methods=['POST'])
 def create_full_registration():
     data = request.json
     if not data:
