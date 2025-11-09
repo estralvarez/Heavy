@@ -164,13 +164,22 @@ export default function RegistroPage() {
     }
   }, [API]);
 
-
   // Optimized step handler with improved error handling
   const handleNext = useCallback(async () => {
     try {
-      if (currentStep === 1) {
-        // Step 1: General Data
-        const generalPayload = {
+      // El usuario llenará todo el formulario de corrido.
+      if (currentStep < 5) {
+        setCurrentStep(currentStep + 1);
+        // Scroll es manejado por useEffect
+        return; // Salir de la función aquí
+      }
+
+      // --- PASO 5: "Finalizar Registro" ---
+      // Este es el único momento en que llamamos a la API
+      if (currentStep === 5) {
+
+        // 1. Construir el payload completo
+        const payload = {
           datos_generales: {
             nombre: generalData.nombre?.trim(),
             apellido: generalData.apellidos?.trim(),
@@ -186,62 +195,17 @@ export default function RegistroPage() {
             institucion: generalData.institucion,
             venopuncion: !!generalData.venopuncion,
           },
-        };
-
-        const response = await postData(`/api/pacientes`, generalPayload);
-        setPacienteId(response.paciente_id);
-      }
-
-      if (currentStep === 2) {
-        if (!pacienteId) {
-          alert("⚠️ No se encontró el ID del paciente. Regrese al paso 1.");
-          return;
-        }
-
-        const zonasPayload = {
           zonas_exposicion: {
             talleres: getSelectedValues(talleres, zonasData),
             industrias: getSelectedValues(industrias, zonasData),
             lugares: getSelectedValues(lugares, zonasData)
-          }
-        };
-        
-        await postData(`/api/pacientes/${pacienteId}/risk-zones`, zonasPayload);
-      }
-
-      if (currentStep === 3) {
-        if (!pacienteId) {
-          alert("⚠️ No se encontró el ID del paciente. Regrese al paso 1.");
-          return;
-        }
-
-        const enfermedadPayload = {
+          },
           antecedentes_patologicos: {
             sintomas: getSelectedValues(sintomas, enfermedadData),
             patologias: getSelectedValues(patologias, enfermedadData),
             metal: enfermedadData.dignostico_anterior ? enfermedadData.metal_dignostico : ''
-          }
-        };
-
-        await postData(`/api/pacientes/${pacienteId}/illness`, enfermedadPayload);
-      }
-
-      if (currentStep === 4) {
-        if (!pacienteId) {
-          alert("⚠️ No se encontró el ID del paciente. Regrese al paso 1.");
-          return;
-        }
-        const alimentosPayload = { habitos_alimenticios: alimentosData };
-        await postData(`/api/pacientes/${pacienteId}/food-habits`, alimentosPayload);
-      }
-
-      if (currentStep === 5) {
-        if (!pacienteId) {
-          alert("⚠️ No se encontró el ID del paciente. Regrese al paso 1.");
-          return;
-        }
-
-        const saludPayload = {
+          },
+          habitos_alimenticios: alimentosData, // Este ya tiene el formato correcto
           habitos_de_salud: {
             fuma: habitosSaludData.fuma,
             actividad: habitosSaludData.actividad,
@@ -253,22 +217,53 @@ export default function RegistroPage() {
             suplementos: getSelectedValues(suplementos, habitosSaludData)
           }
         };
-        await postData(`/api/pacientes/${pacienteId}/health-habits`, saludPayload);
+
+        // 2. Enviar la única petición a la API
+        console.log("Enviando payload completo:", payload);
+        const response = await postData(`/api/pacientes/registro-completo`, payload);
+        
+        // 3. Opcional: Guardar el ID retornado por el backend
+        if (response && response.paciente_id) {
+          setPacienteId(response.paciente_id);
+          console.log("Paciente registrado con ID:", response.paciente_id);
+        }
       }
 
-      // Advance to next step
+      // 4. Avanzar al paso final ("Registro Completado")
       if (currentStep < totalSteps) {
         setCurrentStep(currentStep + 1);
-        // Scroll is handled by useEffect when currentStep changes
       } else {
+        // Este caso ya no debería ocurrir desde handleNext
         window.scrollTo({ top: 0, behavior: "smooth" });
         navigate("/registro");
       }
     } catch (error) {
-      // Error is already handled in postData function
+      // El error ya se alerta en postData,
+      // aquí solo nos aseguramos de no avanzar de paso si falla.
+      console.error("Fallo al enviar el registro completo", error);
     }
-  }, [currentStep, totalSteps, generalData, zonasData, enfermedadData, alimentosData, habitosSaludData, pacienteId, talleres, industrias, lugares, sintomas, patologias, transporte, agua, suplementos, getSelectedValues, postData, navigate]);
-
+  }, [
+    // Dependencias del useCallback
+    currentStep, 
+    totalSteps, 
+    generalData, 
+    zonasData, 
+    enfermedadData, 
+    alimentosData, 
+    habitosSaludData, 
+    talleres, 
+    industrias, 
+    lugares, 
+    sintomas, 
+    patologias, 
+    transporte, 
+    agua, 
+    suplementos, 
+    getSelectedValues, 
+    postData, 
+    navigate,
+    setPacienteId // Añadido
+  ]);
   const handleSubmit = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     navigate("/");
