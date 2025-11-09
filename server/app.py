@@ -15,12 +15,16 @@ def create_app():
     allowed_origins = [
         "http://localhost:3000",
         "https://localhost:3000",
+        "https://heavyapp.vercel.app",
         frontend_url
     ]
 
     # Inicializar extensiones
     CORS(app, resources={
-        r"/api/*": {"origins": allowed_origins},
+        r"/api/*": {
+            "origins": allowed_origins,
+            "methods": ["GET", "POST", "OPTIONS"],
+            "allow_headers": ["Content-Type"]},
     })
 
     # Registrar blueprints
