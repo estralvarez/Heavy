@@ -20,11 +20,7 @@ def create_app():
 
     # Inicializar extensiones
     CORS(app, resources={
-        r"/api/*": {
-            "origins": allowed_origins,
-            "methods": ["GET", "POST", "OPTIONS"],       # Métodos permitidos
-            "allow_headers": ["Content-Type"]
-            },  
+        r"/api/*": {"origins": allowed_origins},
     })
 
     # Registrar blueprints
