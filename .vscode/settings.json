@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "d:\\vscode\\Heavy\\server\\.venv\\Scripts\\python.exe"
+    "python.pythonPath": "d:\\vscode\\Heavy\\server\\.venv\\Scripts\\python.exe",
+    "js/ts.experimental.useTsgo": false
 }
