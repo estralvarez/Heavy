@@ -15,7 +15,7 @@ const MainPage = () => {
     setLoading(true);
     setTimeout(() => {
       navigate("/registro");
-    }, 5000); // Puedes ajustar el tiempo
+    }, 8000); // Puedes ajustar el tiempo
   };
   if (loading === true) {
     // Loader ocupa toda la pantalla, ocultando el resto
